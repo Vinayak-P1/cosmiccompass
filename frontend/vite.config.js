@@ -8,17 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-   server: {
-    allowedHosts: [
-      "unrestorative-slippingly-sam.ngrok-free.dev"
-    ],
-    proxy: {
-      // forward frontend calls to /api -> local backend
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  }
+   base: '/',
 })
