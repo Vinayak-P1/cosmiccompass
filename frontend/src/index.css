@@ -57,3 +57,34 @@ body {
     pointer-events: none;
   }
 }
+
+/* Stronger mobile adjustments to combat browser stacking issues on
+   Samsung Internet and iOS Safari. These only apply on small screens. */
+@media (max-width: 768px) {
+  /* further reduce full-screen gradient/radial opacity */
+  .absolute.inset-0[class*="bg-gradient-to"] {
+    opacity: 0.22 !important;
+  }
+  .absolute.inset-0[class*="bg-[radial-gradient"] {
+    opacity: 0.12 !important;
+  }
+  .absolute.inset-0[class*="bg-black"] {
+    opacity: 0.12 !important;
+  }
+
+  /* Reduce blur intensity on mobile so overlays don't wash content */
+  .backdrop-blur-sm, .backdrop-blur, .backdrop-blur-md, .backdrop-blur-xl, .backdrop-blur-lg {
+    -webkit-backdrop-filter: blur(2px) !important;
+    backdrop-filter: blur(2px) !important;
+  }
+
+  /* Target rounded translucent cards (keep buttons unaffected) */
+  [class*="bg-white/"][class*="rounded"] {
+    background-color: rgba(255,255,255,0.04) !important;
+  }
+
+  /* Reduce starfield intensity when used as a full-screen background */
+  .star-bg > .animate-stars {
+    opacity: 0.25 !important;
+  }
+}
