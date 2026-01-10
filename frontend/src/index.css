@@ -88,3 +88,23 @@ body {
     opacity: 0.25 !important;
   }
 }
+
+/* Aggressive mobile fixes: hide full-viewport decorative overlays that
+   cause stacking and darkness on some mobile browsers (Samsung Internet,
+   iOS Safari). We only target absolute overlays and the animated star
+   background, leaving functional fixed overlays (mobile menu) intact. */
+@media (max-width: 768px) {
+  .absolute.inset-0[class*="bg-gradient-to"],
+  .absolute.inset-0[class*="bg-[radial-gradient"],
+  .animate-stars {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Remove backdrop-filter entirely from mobile for these decorative areas */
+  .absolute.inset-0, .animate-stars, .backdrop-blur-sm, .backdrop-blur, .backdrop-blur-md, .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
