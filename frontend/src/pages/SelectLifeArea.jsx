@@ -57,10 +57,10 @@ const handleProceed=()=>{
 
           {/* Title */}
           <header className="text-center mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
               Choose Any 2 Life Areas
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-gray-300 mt-1">
               Select the areas you want guidance on.
             </p>
           </header>
@@ -84,7 +84,7 @@ const handleProceed=()=>{
                       {area.icon}
                     </span>
                   </div>
-                  <p className="font-medium text-center text-gray-900 dark:text-white">
+                  <p className="font-medium text-center text-white">
                     {area.label}
                   </p>
                 </div>

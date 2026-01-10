@@ -108,3 +108,30 @@ body {
     backdrop-filter: none !important;
   }
 }
+
+/* Ensure any element that uses the project's dark background utility
+   renders text with high contrast. Some browsers (Samsung Internet,
+   iOS Safari) apply color rendering differently for CSS variables
+   or 'dark:' variants — force readable text for elements that include
+   the dark background utility class in their class list. */
+[class*="bg-background-dark"] {
+  color: #f6f6f8 !important;
+}
+
+/* If children use low-contrast utility classes (e.g. text-gray-900),
+   override them inside dark background containers to maintain legibility. */
+[class*="bg-background-dark"] .text-gray-900,
+[class*="bg-background-dark"] .text-slate-800,
+[class*="bg-background-dark"] .text-gray-800 {
+  color: #f6f6f8 !important;
+}
+
+/* Also ensure headings inside dark containers are explicit white */
+[class*="bg-background-dark"] h1,
+[class*="bg-background-dark"] h2,
+[class*="bg-background-dark"] h3,
+[class*="bg-background-dark"] h4,
+[class*="bg-background-dark"] p,
+[class*="bg-background-dark"] label {
+  color: #f6f6f8 !important;
+}

@@ -47,10 +47,10 @@ const Consultation = () => {
 
           {/* Heading */}
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-black dark:text-white sm:text-4xl">
+            <h1 className="text-3xl font-bold text-white sm:text-4xl">
               Start Your Expert Consultation
             </h1>
-            <p className="mt-2 text-base text-black/60 dark:text-white/60">
+            <p className="mt-2 text-base text-gray-300">
               Enter your birth details to begin your cosmic journey.
             </p>
           </div>

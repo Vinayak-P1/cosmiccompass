@@ -17,7 +17,7 @@ const ReadyToExplore = () => {
   return (
     <section className="pt-12 pb-20 px-6 bg-background-light dark:bg-background-dark text-center">
       <div className="max-w-3xl mx-auto flex flex-col items-center gap-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-3xl md:text-4xl font-bold text-white">
           Ready to Explore Your Cosmic Path?
         </h2>
         <button

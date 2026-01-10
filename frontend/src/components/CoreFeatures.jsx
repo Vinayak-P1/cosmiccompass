@@ -12,8 +12,8 @@ const FeatureItem = ({ icon, title, description }) => (
             {/* ICON: material-symbols-outlined ko icon prop se replace karein */}
             <span className="material-symbols-outlined text-primary text-4xl">{icon}</span>
         </div>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-2">{title}</h3>
-        <p className="text-gray-600 dark:text-gray-400 text-sm max-w-[200px]">
+        <h3 className="text-lg font-bold text-white mt-2">{title}</h3>
+        <p className="text-gray-300 text-sm max-w-[200px]">
             {description}
         </p>
     </div>

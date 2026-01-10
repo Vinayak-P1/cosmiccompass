@@ -52,7 +52,7 @@ const AskQuestion = () => {
         </div>
 
         {/* Title */}
-        <h2 className="text-3xl font-bold text-center mb-6">
+        <h2 className="text-3xl font-bold text-center mb-6 text-white">
           What Would You Like to Ask Our Astrologers?
         </h2>
 
@@ -66,7 +66,7 @@ const AskQuestion = () => {
           ></textarea>
         </div>
 
-        <p className="text-sm text-center text-slate-500 dark:text-slate-400 mt-4">
+        <p className="text-sm text-center text-gray-300 mt-4">
           Your question helps us personalize your reading.
         </p>
 
@@ -74,7 +74,7 @@ const AskQuestion = () => {
         <footer className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200/50 dark:border-slate-700/50">
           <button
             onClick={handleBack}
-            className="w-full py-3 px-4 rounded-lg font-bold text-slate-700 dark:text-slate-300 border-2 border-slate-300 dark:border-slate-700 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition duration-300"
+            className="w-full py-3 px-4 rounded-lg font-bold text-white border-2 border-white/10 hover:bg-white/5 transition duration-300"
           >
             Back
           </button>
