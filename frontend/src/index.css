@@ -29,3 +29,31 @@ body {
 .animate-stars {
   animation: stars 60s linear infinite;
 }
+
+/* Cross-browser backdrop-filter support for older Safari / mobile browsers */
+.backdrop-blur-sm, .backdrop-blur, .backdrop-blur-md, .backdrop-blur-xl, .backdrop-blur-lg {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* Mobile overlay fixes: some browsers (Samsung Internet, iOS Safari)
+   stack semi-transparent gradients and dark overlays differently,
+   producing an overly-faded appearance. Reduce opacity of full-screen
+   gradient and black overlays on small screens to preserve readability. */
+@media (max-width: 768px) {
+  /* Only target full-viewport overlay elements to avoid affecting buttons */
+  .absolute.inset-0[class*="bg-gradient-to"] {
+    opacity: 0.45 !important;
+    pointer-events: none;
+  }
+
+  .absolute.inset-0[class*="bg-[radial-gradient"] {
+    opacity: 0.25 !important;
+    pointer-events: none;
+  }
+
+  .absolute.inset-0[class*="bg-black"] {
+    opacity: 0.25 !important;
+    pointer-events: none;
+  }
+}
