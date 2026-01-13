@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Not Found</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <script>
+      // Fallback for GitHub Pages (or other hosts without Netlify redirects)
+      // Load the app's index.html and replace this document with it,
+      // then restore the original URL so the SPA router can take over.
+      (function () {
+        var original = location.pathname + location.search + location.hash;
+        fetch('/index.html')
+          .then(function (r) { return r.text(); })
+          .then(function (html) {
+            document.open();
+            document.write(html);
+            document.close();
+            history.replaceState(null, '', original);
+          })
+          .catch(function () {
+            // If fetch fails, just redirect to root as a last resort
+            location.replace('/');
+          });
+      })();
+    </script>
+  </body>
+</html>
