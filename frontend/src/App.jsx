@@ -27,7 +27,12 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   // Wait until auth initialization completes to avoid redirect flash
-  if (!initialized) return null;
+  if (!initialized)
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-24">
+        <div className="text-center text-white">Loading…</div>
+      </div>
+    );
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
@@ -40,7 +45,12 @@ const AdminRoute = ({ children }) => {
   const { user, initialized } = useContext(AuthContext);
   const location = useLocation();
 
-  if (!initialized) return null;
+  if (!initialized)
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-24">
+        <div className="text-center text-white">Loading…</div>
+      </div>
+    );
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;

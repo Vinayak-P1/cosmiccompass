@@ -93,6 +93,12 @@ const ManageBookings = () => {
               {b.status}
             </span>
           </p>
+          
+          <div className="mt-2 text-sm text-gray-300">
+            <div>Birth Date: <span className="font-semibold text-white">{b.birthDate || 'N/A'}</span></div>
+            <div>Birth Time: <span className="font-semibold text-white">{b.birthTime || (b.unknownTime ? 'Unknown' : 'N/A')}</span></div>
+            <div>Birth Place: <span className="font-semibold text-white">{b.birthLocation || 'N/A'}</span></div>
+          </div>
 
           {b.utr && (
             <p className="mt-2 text-sm">Transaction ID: <span className="font-mono text-sm">{b.utr}</span></p>
