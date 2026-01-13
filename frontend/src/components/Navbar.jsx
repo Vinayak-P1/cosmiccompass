@@ -83,7 +83,7 @@ const Navbar = () => {
             My Bookings
           </NavLink>
           <NavLink
-            to="/blogs"
+            to="/askai"
             className={({ isActive }) =>
               `cursor-pointer transition ${
                 isActive
@@ -210,7 +210,7 @@ const Navbar = () => {
                   My Bookings
                 </NavLink>
                 <NavLink
-                  to="/blogs"
+                  to="/askai"
                   onClick={() => setShowMenu(false)}
                   className={({ isActive }) =>
                     `cursor-pointer text-lg transition ${

@@ -59,7 +59,7 @@ function App() {
         {/* 🌐 Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/astrologers" element={<Astrologers />} />
-        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/askai" element={<Blogs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about-astrologer" element={<AboutAstrologer />} />
 

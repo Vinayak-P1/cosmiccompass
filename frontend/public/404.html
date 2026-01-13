@@ -7,22 +7,31 @@
     <meta name="robots" content="noindex" />
   </head>
   <body>
+    <style>
+      html,body{height:100%}body{margin:0;display:flex;align-items:center;justify-content:center;background:#0f172a;color:#fff;font-family:Arial,Helvetica,sans-serif}
+      .loader{display:flex;flex-direction:column;align-items:center;gap:.75rem}
+      .spinner{width:48px;height:48px;border-radius:50%;border:5px solid rgba(255,255,255,.12);border-top-color:#60a5fa;animation:spin 1s linear infinite}
+      @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+    <div class="loader">
+      <div class="spinner" aria-hidden></div>
+      <div>Loading…</div>
+    </div>
     <script>
-      // Fallback for GitHub Pages (or other hosts without Netlify redirects)
-      // Load the app's index.html and replace this document with it,
-      // then restore the original URL so the SPA router can take over.
+      // Fallback for hosts that serve a 404 page for SPA routes.
+      // Show a loader (above) while fetching `index.html` and injecting it.
       (function () {
         var original = location.pathname + location.search + location.hash;
         fetch('/index.html')
           .then(function (r) { return r.text(); })
           .then(function (html) {
+            // Replace document with app while preserving URL
             document.open();
             document.write(html);
             document.close();
-            history.replaceState(null, '', original);
+            try { history.replaceState(null, '', original); } catch (e) {}
           })
           .catch(function () {
-            // If fetch fails, just redirect to root as a last resort
             location.replace('/');
           });
       })();
