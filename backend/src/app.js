@@ -20,23 +20,8 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// ✅ CORS - BULLETPROOF VERSION
-app.use(cors({
-  origin: '*',
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
-}));
-
-// ✅ Handle preflight explicitly
-app.options('*', cors({
-  origin: '*',
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
-}));
+// ✅ CORS - Simple and works
+app.use(cors());
 
 // ✅ Handle JSON, urlencoded and webhook properly
 app.use((req, res, next) => {
