@@ -20,28 +20,23 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// ✅ CORS Headers - Add before any routes
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Max-Age', '86400');
-  
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
-// ✅ Also use cors middleware
-const corsOptions = {
-  origin: true,
-  credentials: true,
+// ✅ CORS - BULLETPROOF VERSION
+app.use(cors({
+  origin: '*',
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-};
-app.use(cors(corsOptions));
+  optionsSuccessStatus: 200
+}));
+
+// ✅ Handle preflight explicitly
+app.options('*', cors({
+  origin: '*',
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
+}));
 
 // ✅ Handle JSON, urlencoded and webhook properly
 app.use((req, res, next) => {
