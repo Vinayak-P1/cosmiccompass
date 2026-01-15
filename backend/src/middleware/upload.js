@@ -56,9 +56,17 @@ try {
       cloudinary,
       params: {
         folder: "cosmic-compass-reports",
+        format: async (req, file) => "pdf", // Force .pdf extension
+        resource_type: "auto", // Auto-detect file type
         allowed_formats: ["pdf"],
-        resource_type: "raw",
-        // Don't use access_mode for raw files - use default public access
+        public_id: async (req, file) => {
+          // Sanitize filename and remove extension to let Cloudinary add .pdf
+          const sanitized = file.originalname
+            .replace(/\.[^/.]+$/, "") // Remove existing extension
+            .replace(/[^a-zA-Z0-9_-]/g, "_") // Replace special chars
+            .substring(0, 100); // Limit length
+          return `${sanitized}-${Date.now()}`;
+        },
       },
     });
     console.log("✅ Using Cloudinary for PDF uploads");
