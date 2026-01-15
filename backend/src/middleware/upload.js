@@ -57,7 +57,7 @@ try {
       params: {
         folder: "cosmic-compass-reports",
         format: async (req, file) => "pdf", // Force .pdf extension
-        resource_type: "auto", // Auto-detect file type
+        resource_type: "raw", // Auto-detect file type
         allowed_formats: ["pdf"],
         public_id: async (req, file) => {
           // Sanitize filename and remove extension to let Cloudinary add .pdf
