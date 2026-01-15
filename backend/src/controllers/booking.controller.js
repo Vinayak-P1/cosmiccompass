@@ -118,54 +118,15 @@ export const listAll = async (req, res) => {
 // ---------------- Upload Report (ADMIN) ----------------
 export const uploadReport = async (req, res) => {
   try {
-    console.log("=== UPLOAD REPORT START ===");
     const { bookingId } = req.params;
-    console.log("BookingId:", bookingId);
-    console.log("File received:", req.file ? "Yes" : "No");
-    
     const booking = await Booking.findById(bookingId);
-    if (!booking) {
-      console.log("Booking not found");
-      return res.status(404).json({ error: "Booking not found" });
-    }
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+    // File is stored locally at /uploads/reports/{filename}
+    const fileUrl = `/uploads/reports/${req.file.filename}`;
     
-    if (!req.file) {
-      console.log("No file uploaded");
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    console.log("Full file object:", JSON.stringify(req.file, null, 2));
-
-    // Extract the file URL - Cloudinary returns it in different properties
-    let fileUrl = null;
-    
-    // Try different properties where Cloudinary might store the URL
-    if (req.file.path && req.file.path.startsWith("http")) {
-      fileUrl = req.file.path;
-      console.log("✅ Using req.file.path:", fileUrl);
-    } else if (req.file.secure_url) {
-      fileUrl = req.file.secure_url;
-      console.log("✅ Using req.file.secure_url:", fileUrl);
-    } else if (req.file.url) {
-      fileUrl = req.file.url;
-      console.log("✅ Using req.file.url:", fileUrl);
-    } else if (req.file.filename) {
-      // Local storage fallback
-      fileUrl = `/uploads/reports/${req.file.filename}`;
-      console.log("✅ Using local storage:", fileUrl);
-    } else {
-      console.log("❌ No valid URL found in file object");
-      console.log("Available properties:", Object.keys(req.file));
-      return res.status(400).json({ 
-        error: "File upload processing error - could not get file URL",
-        available: Object.keys(req.file)
-      });
-    }
-
-    // Validate URL format
-    if (!fileUrl.startsWith("http") && !fileUrl.startsWith("/")) {
-      console.log("⚠️ URL format unexpected:", fileUrl);
-    }
+    console.log("✅ Storing PDF with URL:", fileUrl);
 
     // store in DB
     const report = await Report.create({
@@ -178,14 +139,10 @@ export const uploadReport = async (req, res) => {
     booking.status = "completed";
     await booking.save();
 
-    console.log("✅ Report created successfully:", report._id);
-    console.log("✅ File URL saved:", fileUrl);
-    console.log("=== UPLOAD REPORT END ===");
-    
-    res.json({ success: true, report, fileUrl });
+    res.json({ success: true, report });
   } catch (err) {
-    console.error("❌ UPLOAD REPORT ERROR =>", err);
-    res.status(500).json({ error: `Upload failed: ${err.message}` });
+    console.error("UPLOAD REPORT ERROR =>", err);
+    res.status(500).json({ error: err.message });
   }
 };
 

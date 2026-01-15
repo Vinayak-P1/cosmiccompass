@@ -14,16 +14,15 @@ export const imageUpload = multer({
       folder: "cosmic-compass-profiles",
       allowed_formats: ["jpg", "jpeg", "png", "webp"],
       resource_type: "image",
-      access_mode: "public", // ensures public URLs
+      access_mode: "public",
     },
   }),
 });
 
 // ======================================================
-// 🟣 PDF UPLOAD (for reports) — try Cloudinary first, fallback to local
+// 🟣 PDF UPLOAD - USE LOCAL STORAGE (SIMPLE & RELIABLE)
 // ======================================================
 
-// ✅ allow only PDFs
 const pdfFilter = (req, file, cb) => {
   const isPdf =
     file.mimetype === "application/pdf" ||
@@ -32,55 +31,31 @@ const pdfFilter = (req, file, cb) => {
   else cb(new Error("Only PDF files are allowed!"), false);
 };
 
-// ✅ Local storage fallback
-const tempDir = path.resolve("uploads/reports");
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir, { recursive: true });
+// ✅ Ensure upload folder exists
+const uploadsDir = path.resolve("uploads");
+const reportsDir = path.join(uploadsDir, "reports");
+
+if (!fs.existsSync(reportsDir)) {
+  fs.mkdirSync(reportsDir, { recursive: true });
+  console.log("✅ Created uploads/reports directory");
 }
 
-const localPdfStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, tempDir),
+// ✅ Simple local storage for PDFs
+const pdfStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, reportsDir);
+  },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || ".pdf";
-    cb(null, `${Date.now()}${ext}`);
+    // Keep original filename with timestamp to avoid conflicts
+    const sanitized = path.basename(file.originalname);
+    const timestamp = Date.now();
+    cb(null, `${timestamp}-${sanitized}`);
   },
 });
 
-// ✅ Try Cloudinary first, fallback to local
-let pdfUploadStorage;
-
-try {
-  // Try Cloudinary if credentials exist
-  if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
-    pdfUploadStorage = new CloudinaryStorage({
-      cloudinary,
-      params: {
-        folder: "cosmic-compass-reports",
-        format: async (req, file) => "pdf", // Force .pdf extension
-        resource_type: "raw", // Auto-detect file type
-        allowed_formats: ["pdf"],
-        public_id: async (req, file) => {
-          // Sanitize filename and remove extension to let Cloudinary add .pdf
-          const sanitized = file.originalname
-            .replace(/\.[^/.]+$/, "") // Remove existing extension
-            .replace(/[^a-zA-Z0-9_-]/g, "_") // Replace special chars
-            .substring(0, 100); // Limit length
-          return `${sanitized}-${Date.now()}`;
-        },
-      },
-    });
-    console.log("✅ Using Cloudinary for PDF uploads");
-  } else {
-    throw new Error("Cloudinary credentials not set");
-  }
-} catch (err) {
-  console.log("⚠️ Cloudinary not available, using local storage for PDFs:", err.message);
-  pdfUploadStorage = localPdfStorage;
-}
-
-// ✅ PDF upload middleware
+// ✅ Export PDF upload middleware using LOCAL STORAGE
 export const pdfUpload = multer({
-  storage: pdfUploadStorage,
+  storage: pdfStorage,
   fileFilter: pdfFilter,
   limits: { fileSize: 20 * 1024 * 1024 }, // 20 MB
 });
