@@ -153,8 +153,22 @@ export const viewReport = async (req, res) => {
     if (!booking || !booking.report)
       return res.status(404).json({ error: "Report not found" });
 
-    // Redirect to Cloudinary URL
-    res.redirect(booking.report.fileUrl);
+    const fileUrl = booking.report.fileUrl;
+    
+    // If it's an old local path (starts with /uploads/), it won't work on Render
+    // For now, just redirect to Cloudinary URL if it exists
+    if (fileUrl && fileUrl.startsWith("http")) {
+      // It's already a full Cloudinary URL
+      res.redirect(fileUrl);
+    } else if (fileUrl) {
+      // It's an old local path - return error asking admin to re-upload
+      return res.status(410).json({ 
+        error: "This report was stored locally and is no longer accessible. Admin needs to re-upload it.",
+        bookingId 
+      });
+    } else {
+      return res.status(404).json({ error: "Report file URL not found" });
+    }
   } catch (err) {
     console.error("VIEW REPORT ERROR =>", err);
     res.status(500).json({ error: "Error fetching PDF" });
