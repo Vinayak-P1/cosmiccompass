@@ -32,24 +32,11 @@ app.use((req, res, next) => {
   }
 });
 
-const allowed = process.env.FRONTEND_URL?.split(",") || ["http://localhost:5173"];
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (e.g. curl, mobile apps, server-to-server)
-    if (!origin) return callback(null, true);
-
-    // In non-production (dev) allow any origin (makes using ngrok easy)
-    if (process.env.NODE_ENV !== "production") return callback(null, true);
-
-    // In production, check if origin is allowed or if it's from *.onrender.com (for Render deployments)
-    if (allowed.includes(origin) || origin.includes("onrender.com")) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("CORS policy: This origin is not allowed."));
-  },
+  origin: true, // Allow all origins
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
