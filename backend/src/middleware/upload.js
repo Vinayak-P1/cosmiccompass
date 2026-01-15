@@ -58,7 +58,7 @@ try {
         folder: "cosmic-compass-reports",
         allowed_formats: ["pdf"],
         resource_type: "raw",
-        access_mode: "token",
+        // Don't use access_mode for raw files - use default public access
       },
     });
     console.log("✅ Using Cloudinary for PDF uploads");
