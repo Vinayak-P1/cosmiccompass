@@ -13,6 +13,8 @@ export const imageUpload = multer({
       allowed_formats: ["jpg", "jpeg", "png", "webp"],
       resource_type: "image",
       access_mode: "public",
+      use_filename: true,
+      unique_filename: false,
     },
   }),
 });
@@ -29,13 +31,17 @@ const pdfFilter = (req, file, cb) => {
   else cb(new Error("Only PDF files are allowed!"), false);
 };
 
-// ✅ Cloudinary storage for PDFs (PERMANENT - never deleted)
+// Cloudinary storage for PDFs (PERMANENT - never deleted)
+// Note: use_filename:true + unique_filename:false helps preserve original filename/extension
 const pdfStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "cosmic-compass-reports",
     resource_type: "raw",
     allowed_formats: ["pdf"],
+    access_mode: "public",
+    use_filename: true,
+    unique_filename: false,
   },
 });
 

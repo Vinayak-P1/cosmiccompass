@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API = import.meta.env.VITE_API_URL || "";
+
+/* Reuse same robust PDF opener as admin page */
+async function openPdfUrlInNewTab(url, headers = {}) {
+  try {
+    const resp = await fetch(url, { headers });
+    if (!resp.ok) {
+      window.open(url, "_blank");
+      return;
+    }
+    const buffer = await resp.arrayBuffer();
+    const blob = new Blob([buffer], { type: "application/pdf" });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, "_blank");
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60 * 1000);
+  } catch (e) {
+    console.error("openPdfUrlInNewTab error:", e);
+    window.open(url, "_blank");
+  }
+}
+
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const navigate = useNavigate();
-  const API = import.meta.env.VITE_API_URL || "";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,7 +46,7 @@ const MyBookings = () => {
     if (s === "pending") return <span className="text-xs px-2 py-1 rounded bg-yellow-700">Pending</span>;
     if (s === "disapproved") return <span className="text-xs px-2 py-1 rounded bg-red-600">Disapproved</span>;
     return <span className="text-xs px-2 py-1 rounded bg-red-600">{s}</span>;
-    };
+  };
 
   return (
     <div className="font-display bg-background-dark text-slate-200 min-h-screen flex flex-col items-center pt-24 p-6">
@@ -48,26 +68,27 @@ const MyBookings = () => {
             {b.report && (
               <button
                 onClick={() => {
-                  const token = localStorage.getItem('token');
-                  fetch(`${API}/api/bookings/report/view/${b._id}`)
-                  .then(r => {
-                    console.log('Response status:', r.status);
-                    return r.json();
+                  const token = localStorage.getItem('token') || "";
+                  fetch(`${API}/api/bookings/report/view/${b._id}`, {
+                    headers: token ? { Authorization: `Bearer ${token}` } : {}
                   })
-                  .then(data => {
-                    console.log('View report response:', data);
-                    if (data.fileUrl) {
-                      console.log('Opening URL:', data.fileUrl);
-                      // Open Cloudinary PDF in new tab
-                      window.open(data.fileUrl, '_blank');
-                    } else {
-                      alert(data.error || 'Failed to load report');
-                    }
-                  })
-                  .catch(e => {
-                    console.error('Fetch error:', e);
-                    alert('Error: ' + e.message);
-                  });
+                    .then(r => {
+                      console.log('Response status:', r.status);
+                      return r.json();
+                    })
+                    .then(data => {
+                      console.log('View report response:', data);
+                      if (data.fileUrl) {
+                        console.log('Opening URL via blob helper:', data.fileUrl);
+                        openPdfUrlInNewTab(data.fileUrl, token ? { Authorization: `Bearer ${token}` } : {});
+                      } else {
+                        alert(data.error || 'Failed to load report');
+                      }
+                    })
+                    .catch(e => {
+                      console.error('Fetch error:', e);
+                      alert('Error: ' + e.message);
+                    });
                 }}
                 className="inline-block mt-3 text-blue-400 underline"
               >
