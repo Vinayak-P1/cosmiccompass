@@ -123,10 +123,15 @@ export const uploadReport = async (req, res) => {
     if (!booking) return res.status(404).json({ error: "Booking not found" });
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-    // File is stored locally at /uploads/reports/{filename}
-    const fileUrl = `/uploads/reports/${req.file.filename}`;
+    // Cloudinary returns the secure_url after upload
+    const fileUrl = req.file.secure_url || req.file.path;
     
-    console.log("✅ Storing PDF with URL:", fileUrl);
+    if (!fileUrl) {
+      console.error("❌ No URL from Cloudinary:", req.file);
+      return res.status(400).json({ error: "Failed to upload file to Cloudinary" });
+    }
+    
+    console.log("✅ File uploaded to Cloudinary:", fileUrl);
 
     // store in DB
     const report = await Report.create({
@@ -159,27 +164,17 @@ export const viewReport = async (req, res) => {
 
     const fileUrl = booking.report.fileUrl;
     
-    // If it's a Cloudinary URL, return it so browser can fetch directly
-    if (fileUrl && fileUrl.startsWith("http")) {
-      console.log("✅ Returning Cloudinary URL:", fileUrl);
-      // Return the URL as JSON so frontend can open it
-      return res.json({ 
-        success: true, 
-        fileUrl: fileUrl,
-        type: "cloudinary"
-      });
-    } 
-    
-    // If it's an old local path
-    if (fileUrl && fileUrl.startsWith("/uploads")) {
-      console.log("⚠️ Old local path, needs re-upload");
-      return res.status(410).json({ 
-        error: "This report was stored locally and is no longer accessible. Admin needs to re-upload it.",
-        bookingId 
-      });
+    if (!fileUrl) {
+      return res.status(404).json({ error: "Report file URL not found" });
     }
+
+    console.log("✅ Returning report URL:", fileUrl);
     
-    return res.status(404).json({ error: "Report file URL not found" });
+    // Return the URL as JSON so frontend can open it
+    return res.json({ 
+      success: true, 
+      fileUrl: fileUrl
+    });
   } catch (err) {
     console.error("VIEW REPORT ERROR =>", err);
     res.status(500).json({ error: "Error fetching PDF" });

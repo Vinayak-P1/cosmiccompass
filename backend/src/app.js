@@ -56,7 +56,4 @@ app.use("/api/astrologers", astrologerRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/pricing", pricingRoutes);
 
-// ✅ Serve static uploads (PDFs, images)
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-
 export default app;
