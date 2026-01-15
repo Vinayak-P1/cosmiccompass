@@ -134,31 +134,37 @@ export const uploadReport = async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    console.log("File details:", {
-      path: req.file.path,
-      filename: req.file.filename,
-      size: req.file.size,
-      mimetype: req.file.mimetype
-    });
+    console.log("Full file object:", JSON.stringify(req.file, null, 2));
 
-    // Check if file was uploaded via Cloudinary or local
+    // Extract the file URL - Cloudinary returns it in different properties
     let fileUrl = null;
     
+    // Try different properties where Cloudinary might store the URL
     if (req.file.path && req.file.path.startsWith("http")) {
-      // Cloudinary storage - file has a full URL path
       fileUrl = req.file.path;
-      console.log("✅ Using Cloudinary URL:", fileUrl);
+      console.log("✅ Using req.file.path:", fileUrl);
+    } else if (req.file.secure_url) {
+      fileUrl = req.file.secure_url;
+      console.log("✅ Using req.file.secure_url:", fileUrl);
+    } else if (req.file.url) {
+      fileUrl = req.file.url;
+      console.log("✅ Using req.file.url:", fileUrl);
     } else if (req.file.filename) {
-      // Local file storage fallback
+      // Local storage fallback
       fileUrl = `/uploads/reports/${req.file.filename}`;
-      console.log("✅ Using local file path:", fileUrl);
-    } else if (req.file.path) {
-      // Fallback - just use the path as is
-      fileUrl = req.file.path;
-      console.log("✅ Using file path:", fileUrl);
+      console.log("✅ Using local storage:", fileUrl);
     } else {
-      console.log("❌ No valid file path or URL found");
-      return res.status(400).json({ error: "File upload processing error - no valid file path" });
+      console.log("❌ No valid URL found in file object");
+      console.log("Available properties:", Object.keys(req.file));
+      return res.status(400).json({ 
+        error: "File upload processing error - could not get file URL",
+        available: Object.keys(req.file)
+      });
+    }
+
+    // Validate URL format
+    if (!fileUrl.startsWith("http") && !fileUrl.startsWith("/")) {
+      console.log("⚠️ URL format unexpected:", fileUrl);
     }
 
     // store in DB
@@ -173,9 +179,10 @@ export const uploadReport = async (req, res) => {
     await booking.save();
 
     console.log("✅ Report created successfully:", report._id);
+    console.log("✅ File URL saved:", fileUrl);
     console.log("=== UPLOAD REPORT END ===");
     
-    res.json({ success: true, report });
+    res.json({ success: true, report, fileUrl });
   } catch (err) {
     console.error("❌ UPLOAD REPORT ERROR =>", err);
     res.status(500).json({ error: `Upload failed: ${err.message}` });

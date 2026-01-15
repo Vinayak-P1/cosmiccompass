@@ -112,15 +112,24 @@ const ManageBookings = () => {
                   fetch(`${API}/api/bookings/report/view/${b._id}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                   })
-                  .then(r => r.json())
+                  .then(r => {
+                    console.log('Response status:', r.status);
+                    return r.json();
+                  })
                   .then(data => {
+                    console.log('View report response:', data);
                     if (data.fileUrl) {
+                      console.log('Opening URL:', data.fileUrl);
+                      // Open in new tab - Cloudinary will handle PDF display
                       window.open(data.fileUrl, '_blank');
                     } else {
                       alert(data.error || 'Failed to load report');
                     }
                   })
-                  .catch(e => alert('Error: ' + e.message));
+                  .catch(e => {
+                    console.error('Fetch error:', e);
+                    alert('Error: ' + e.message);
+                  });
                 }}
                 className="text-blue-400 underline"
               >
