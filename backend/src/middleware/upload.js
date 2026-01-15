@@ -1,6 +1,4 @@
 import multer from "multer";
-import path from "path";
-import fs from "fs";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../config/cloudinary.js";
 
@@ -20,23 +18,8 @@ export const imageUpload = multer({
 });
 
 // ======================================================
-// 🟣 PDF UPLOAD (for reports) — stored temporarily on disk
+// 🟣 PDF UPLOAD (for reports) — stored on Cloudinary
 // ======================================================
-
-// ✅ ensure local uploads folder exists
-const tempDir = path.resolve("uploads");
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir, { recursive: true });
-}
-
-// ✅ custom local storage
-const pdfStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, tempDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || ".pdf";
-    cb(null, `${Date.now()}${ext}`);
-  },
-});
 
 // ✅ allow only PDFs
 const pdfFilter = (req, file, cb) => {
@@ -47,9 +30,17 @@ const pdfFilter = (req, file, cb) => {
   else cb(new Error("Only PDF files are allowed!"), false);
 };
 
-// ✅ export multer instance
+// ✅ Cloudinary storage for PDFs
 export const pdfUpload = multer({
-  storage: pdfStorage,
+  storage: new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: "cosmic-compass-reports",
+      allowed_formats: ["pdf"],
+      resource_type: "raw", // PDFs are raw files in Cloudinary
+      access_mode: "token", // secure access
+    },
+  }),
   fileFilter: pdfFilter,
   limits: { fileSize: 20 * 1024 * 1024 }, // 20 MB
 });

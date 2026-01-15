@@ -3,14 +3,8 @@ import Booking from "../models/Booking.js";
 import Report from "../models/Report.js";
 import Coupon from "../models/Coupon.js";
 import cloudinary from "cloudinary";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 // Node 18+ has global fetch. If you are on older Node, install node-fetch.
 const toPaise = (r) => Math.round(Number(r) * 100);
-// ES module dirname setup
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 // ---------------- Coupon helpers ----------------
 function priceAfterCoupon(base, couponDoc) {
   if (!couponDoc) return base;
@@ -129,19 +123,13 @@ export const uploadReport = async (req, res) => {
     if (!booking) return res.status(404).json({ error: "Booking not found" });
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-    // ensure upload folder
-    const reportsDir = path.join(__dirname, "../../uploads/reports");
-    if (!fs.existsSync(reportsDir)) fs.mkdirSync(reportsDir, { recursive: true });
-
-    // move uploaded file
-    const oldPath = req.file.path;
-    const newPath = path.join(reportsDir, `${bookingId}.pdf`);
-    fs.renameSync(oldPath, newPath);
+    // req.file.path is the Cloudinary URL when using CloudinaryStorage
+    const fileUrl = req.file.path; // Cloudinary provides the full URL
 
     // store in DB
     const report = await Report.create({
       booking: booking._id,
-      fileUrl: `/uploads/reports/${bookingId}.pdf`,
+      fileUrl: fileUrl, // Store the Cloudinary URL
       deliveredAt: new Date(),
     });
 
@@ -157,25 +145,19 @@ export const uploadReport = async (req, res) => {
 };
 
 // ---------------- View/Download Report (USER) ----------------
-// Streams the PDF via server so browser gets correct headers.
-// Protect: only the booking owner (or admin) can access.
+// Redirects to Cloudinary URL where the PDF is hosted
 export const viewReport = async (req, res) => {
   try {
     const { bookingId } = req.params;
     const booking = await Booking.findById(bookingId).populate("report");
     if (!booking || !booking.report)
-      return res.status(404).send("Report not found");
+      return res.status(404).json({ error: "Report not found" });
 
-    const filePath = path.join(__dirname, "../../", booking.report.fileUrl);
-    if (!fs.existsSync(filePath))
-      return res.status(404).send("File not found on server");
-
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `inline; filename="${bookingId}.pdf"`);
-    fs.createReadStream(filePath).pipe(res);
+    // Redirect to Cloudinary URL
+    res.redirect(booking.report.fileUrl);
   } catch (err) {
     console.error("VIEW REPORT ERROR =>", err);
-    res.status(500).send("Error fetching PDF");
+    res.status(500).json({ error: "Error fetching PDF" });
   }
 };
 
