@@ -106,7 +106,26 @@ const ManageBookings = () => {
 
           {b.report ? (
             <div className="mt-2">
-              <button onClick={() => window.open(`${API}/api/bookings/report/view/${b._id}`, "_blank")} className="text-blue-400 underline">View Report</button>
+              <button 
+                onClick={() => {
+                  const token = localStorage.getItem('token');
+                  fetch(`${API}/api/bookings/report/view/${b._id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                  })
+                  .then(r => r.json())
+                  .then(data => {
+                    if (data.fileUrl) {
+                      window.open(data.fileUrl, '_blank');
+                    } else {
+                      alert(data.error || 'Failed to load report');
+                    }
+                  })
+                  .catch(e => alert('Error: ' + e.message));
+                }}
+                className="text-blue-400 underline"
+              >
+                View Report
+              </button>
             </div>
           ) : (
             <div className="flex flex-col sm:flex-row items-start gap-3 mt-3">

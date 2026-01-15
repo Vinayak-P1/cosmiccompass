@@ -183,30 +183,39 @@ export const uploadReport = async (req, res) => {
 };
 
 // ---------------- View/Download Report (USER) ----------------
-// Redirects to Cloudinary URL where the PDF is hosted
+// Returns Cloudinary URL for the PDF so browser can fetch it directly
 export const viewReport = async (req, res) => {
   try {
     const { bookingId } = req.params;
     const booking = await Booking.findById(bookingId).populate("report");
-    if (!booking || !booking.report)
+    
+    if (!booking || !booking.report) {
       return res.status(404).json({ error: "Report not found" });
+    }
 
     const fileUrl = booking.report.fileUrl;
     
-    // If it's an old local path (starts with /uploads/), it won't work on Render
-    // For now, just redirect to Cloudinary URL if it exists
+    // If it's a Cloudinary URL, return it so browser can fetch directly
     if (fileUrl && fileUrl.startsWith("http")) {
-      // It's already a full Cloudinary URL
-      res.redirect(fileUrl);
-    } else if (fileUrl) {
-      // It's an old local path - return error asking admin to re-upload
+      console.log("✅ Returning Cloudinary URL:", fileUrl);
+      // Return the URL as JSON so frontend can open it
+      return res.json({ 
+        success: true, 
+        fileUrl: fileUrl,
+        type: "cloudinary"
+      });
+    } 
+    
+    // If it's an old local path
+    if (fileUrl && fileUrl.startsWith("/uploads")) {
+      console.log("⚠️ Old local path, needs re-upload");
       return res.status(410).json({ 
         error: "This report was stored locally and is no longer accessible. Admin needs to re-upload it.",
         bookingId 
       });
-    } else {
-      return res.status(404).json({ error: "Report file URL not found" });
     }
+    
+    return res.status(404).json({ error: "Report file URL not found" });
   } catch (err) {
     console.error("VIEW REPORT ERROR =>", err);
     res.status(500).json({ error: "Error fetching PDF" });

@@ -45,16 +45,25 @@ const MyBookings = () => {
               Amount: ₹{(b.amount / 100).toFixed(2)} · {new Date(b.createdAt).toLocaleDateString()}
             </p>
 
-            {b.report?.fileUrl && (
-              <a
+            {b.report && (
+              <button
+                onClick={() => {
+                  const token = localStorage.getItem('token');
+                  fetch(`${API}/api/bookings/report/view/${b._id}`)
+                  .then(r => r.json())
+                  .then(data => {
+                    if (data.fileUrl) {
+                      window.open(data.fileUrl, '_blank');
+                    } else {
+                      alert(data.error || 'Failed to load report');
+                    }
+                  })
+                  .catch(e => alert('Error: ' + e.message));
+                }}
                 className="inline-block mt-3 text-blue-400 underline"
-                href={`${API}${b.report.fileUrl}`}
-
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 View Report
-              </a>
+              </button>
             )}
           </div>
         ))
