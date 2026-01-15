@@ -1,4 +1,6 @@
 import multer from "multer";
+import path from "path";
+import fs from "fs";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../config/cloudinary.js";
 
@@ -18,7 +20,7 @@ export const imageUpload = multer({
 });
 
 // ======================================================
-// 🟣 PDF UPLOAD (for reports) — stored on Cloudinary
+// 🟣 PDF UPLOAD (for reports) — try Cloudinary first, fallback to local
 // ======================================================
 
 // ✅ allow only PDFs
@@ -30,17 +32,47 @@ const pdfFilter = (req, file, cb) => {
   else cb(new Error("Only PDF files are allowed!"), false);
 };
 
-// ✅ Cloudinary storage for PDFs
+// ✅ Local storage fallback
+const tempDir = path.resolve("uploads/reports");
+if (!fs.existsSync(tempDir)) {
+  fs.mkdirSync(tempDir, { recursive: true });
+}
+
+const localPdfStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, tempDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase() || ".pdf";
+    cb(null, `${Date.now()}${ext}`);
+  },
+});
+
+// ✅ Try Cloudinary first, fallback to local
+let pdfUploadStorage;
+
+try {
+  // Try Cloudinary if credentials exist
+  if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
+    pdfUploadStorage = new CloudinaryStorage({
+      cloudinary,
+      params: {
+        folder: "cosmic-compass-reports",
+        allowed_formats: ["pdf"],
+        resource_type: "raw",
+        access_mode: "token",
+      },
+    });
+    console.log("✅ Using Cloudinary for PDF uploads");
+  } else {
+    throw new Error("Cloudinary credentials not set");
+  }
+} catch (err) {
+  console.log("⚠️ Cloudinary not available, using local storage for PDFs:", err.message);
+  pdfUploadStorage = localPdfStorage;
+}
+
+// ✅ PDF upload middleware
 export const pdfUpload = multer({
-  storage: new CloudinaryStorage({
-    cloudinary,
-    params: {
-      folder: "cosmic-compass-reports",
-      allowed_formats: ["pdf"],
-      resource_type: "raw", // PDFs are raw files in Cloudinary
-      access_mode: "token", // secure access
-    },
-  }),
+  storage: pdfUploadStorage,
   fileFilter: pdfFilter,
   limits: { fileSize: 20 * 1024 * 1024 }, // 20 MB
 });

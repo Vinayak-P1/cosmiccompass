@@ -123,13 +123,27 @@ export const uploadReport = async (req, res) => {
     if (!booking) return res.status(404).json({ error: "Booking not found" });
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-    // req.file.path is the Cloudinary URL when using CloudinaryStorage
-    const fileUrl = req.file.path; // Cloudinary provides the full URL
+    console.log("File object:", req.file);
+
+    // Check if file was uploaded via Cloudinary or local
+    let fileUrl = null;
+    
+    if (req.file.path) {
+      // Cloudinary storage - file has a path (full URL)
+      fileUrl = req.file.path;
+      console.log("Using Cloudinary URL:", fileUrl);
+    } else if (req.file.filename) {
+      // Fallback - local file storage
+      fileUrl = `/uploads/reports/${req.file.filename}`;
+      console.log("Using local file:", fileUrl);
+    } else {
+      return res.status(400).json({ error: "File upload processing error" });
+    }
 
     // store in DB
     const report = await Report.create({
       booking: booking._id,
-      fileUrl: fileUrl, // Store the Cloudinary URL
+      fileUrl: fileUrl,
       deliveredAt: new Date(),
     });
 
