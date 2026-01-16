@@ -93,6 +93,19 @@ const ManageBookings = () => {
     } else alert(j.error || "Disapprove failed");
   };
 
+  const deleteReport = async (bookingId) => {
+    if (!confirm("Delete this report? You will be able to upload a new one.")) return;
+    const res = await fetch(`${API}/api/bookings/${bookingId}/report/delete`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const j = await res.json();
+    if (j.success) {
+      alert("Report deleted successfully. You can now upload a new one.");
+      fetchBookings();
+    } else alert(j.error || "Delete failed");
+  };
+
   return (
     <div className="min-h-screen bg-[#0B0B1A] text-white pt-24 md:pt-28 lg:pt-32 px-6 py-8">
       <div className="max-w-6xl mx-auto">
@@ -129,7 +142,7 @@ const ManageBookings = () => {
             )}
 
             {b.report ? (
-              <div className="mt-2">
+              <div className="mt-2 flex flex-col sm:flex-row items-start gap-3">
                 <button
                   onClick={() => {
                     // Use token header for authenticated fetch (admin)
@@ -157,6 +170,12 @@ const ManageBookings = () => {
                   className="text-blue-400 underline"
                 >
                   View Report
+                </button>
+                <button
+                  onClick={() => deleteReport(b._id)}
+                  className="bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded text-white"
+                >
+                  Delete & Re-upload
                 </button>
               </div>
             ) : (

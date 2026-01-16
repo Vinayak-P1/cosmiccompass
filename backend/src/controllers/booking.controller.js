@@ -181,6 +181,52 @@ export const viewReport = async (req, res) => {
   }
 };
 
+// ---------------- Delete Report (ADMIN) ----------------
+export const deleteReport = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const booking = await Booking.findById(bookingId).populate("report");
+
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+    if (!booking.report) return res.status(404).json({ error: "No report found for this booking" });
+
+    const reportId = booking.report._id;
+    const fileUrl = booking.report.fileUrl;
+
+    // Delete from Cloudinary if URL exists
+    if (fileUrl) {
+      try {
+        // Extract public_id from Cloudinary URL
+        // URL format: https://res.cloudinary.com/xxx/image/upload/v123/folder/public_id.pdf
+        const urlParts = fileUrl.split("/");
+        const fileName = urlParts[urlParts.length - 1]; // e.g., "public_id.pdf"
+        const publicId = fileName.replace(".pdf", ""); // remove extension
+        const folder = urlParts[urlParts.length - 2]; // get folder name
+        const fullPublicId = `${folder}/${publicId}`; // construct full public_id
+        
+        await cloudinary.v2.uploader.destroy(fullPublicId);
+        console.log("✅ Deleted from Cloudinary:", fullPublicId);
+      } catch (cloudinaryErr) {
+        console.error("⚠️ Error deleting from Cloudinary:", cloudinaryErr);
+        // Don't fail the entire operation if Cloudinary delete fails
+      }
+    }
+
+    // Delete report from database
+    await Report.findByIdAndDelete(reportId);
+
+    // Remove report reference from booking and reset status
+    booking.report = null;
+    booking.status = "inprogress"; // Reset to inprogress so admin can re-upload
+    await booking.save();
+
+    res.json({ success: true, message: "Report deleted successfully" });
+  } catch (err) {
+    console.error("DELETE REPORT ERROR =>", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // ---------------- Manual payment submission (QR/UPI flow)
 export const submitManualPayment = async (req, res) => {
   try {
