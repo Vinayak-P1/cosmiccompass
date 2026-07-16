@@ -137,11 +137,13 @@ export const verifyOtp = async (req, res) => {
     const record = await Otp.findOne({ phone });
 
     if (!record) {
+      console.warn(`[AUTH] Verification failed: No OTP record found in DB for ${phone}`);
       return res.status(400).json({ error: "No OTP found. Please request a new one." });
     }
 
     // ── Check expiry ──────────────────────────────────────────────────────────
     if (new Date() > record.expiresAt) {
+      console.warn(`[AUTH] Verification failed: OTP expired for ${phone}. Server Time: ${new Date().toISOString()}, Expiry Time: ${new Date(record.expiresAt).toISOString()}`);
       await Otp.deleteOne({ _id: record._id });
       return res.status(400).json({ error: "OTP has expired. Please request a new one." });
     }
@@ -149,6 +151,7 @@ export const verifyOtp = async (req, res) => {
     // ── Verify hash ───────────────────────────────────────────────────────────
     const isMatch = await bcrypt.compare(otp, record.otpHash);
     if (!isMatch) {
+      console.warn(`[AUTH] Verification failed: Entered OTP (${otp}) does not match stored hash for ${phone}`);
       return res.status(400).json({ error: "Invalid OTP. Please check and try again." });
     }
 
