@@ -18,7 +18,20 @@ const router = Router();
 // user bookings and payments
 router.post("/checkout", protect, checkout);
 // Manual QR payment: user submits UTR and screenshot after scanning QR
-router.post("/manual", protect, imageUpload.single("screenshot"), submitManualPayment);
+router.post(
+  "/manual",
+  protect,
+  (req, res, next) => {
+    imageUpload.single("screenshot")(req, res, (err) => {
+      if (err) {
+        console.error("MULTER SCREENSHOT ERROR:", err);
+        return res.status(400).json({ error: `Screenshot upload error: ${err.message}` });
+      }
+      next();
+    });
+  },
+  submitManualPayment
+);
 router.get("/me", protect, myBookings);
 
 // Admin approve/disapprove
