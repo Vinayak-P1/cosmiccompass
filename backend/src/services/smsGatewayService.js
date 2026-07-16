@@ -35,6 +35,14 @@ export async function sendSms(phone, message) {
     payload.withDeliveryReport = true;
   }
 
+  // Support dual SIM configurations from environment
+  if (process.env.SMS_GATEWAY_SIM_NUMBER) {
+    const simNum = parseInt(process.env.SMS_GATEWAY_SIM_NUMBER, 10);
+    if (simNum >= 1 && simNum <= 3) {
+      payload.simNumber = simNum;
+    }
+  }
+
   try {
     const response = await axios.post(SMS_ENDPOINT, payload, {
       auth: {
