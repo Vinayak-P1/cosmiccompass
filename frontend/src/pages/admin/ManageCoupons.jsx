@@ -158,7 +158,7 @@ const ManageCoupons = () => {
           </div>
         </div>
 
-        {/* Coupons Table */}
+        {/* Coupons Table / Mobile Cards */}
         {coupons.length === 0 ? (
           <div className="bg-white/5 border border-white/10 rounded-2xl p-12 text-center">
             <span className="material-symbols-outlined text-5xl text-gray-600 mb-4 block">
@@ -167,74 +167,139 @@ const ManageCoupons = () => {
             <p className="text-gray-400 text-lg">No coupons yet</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border border-white/15 rounded-xl overflow-hidden">
-              <thead>
-                <tr className="bg-white/10">
-                  <th className="p-3 text-left text-sm font-semibold">Code</th>
-                  <th className="p-3 text-left text-sm font-semibold">Discount</th>
-                  <th className="p-3 text-left text-sm font-semibold">Uses Left</th>
-                  <th className="p-3 text-center text-sm font-semibold">Status</th>
-                  <th className="p-3 text-center text-sm font-semibold">
-                    <span className="text-amber-400">⭐ Featured</span>
-                  </th>
-                  <th className="p-3 text-center text-sm font-semibold">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {coupons.map((c) => (
-                  <tr key={c._id} className="border-t border-white/10 hover:bg-white/5 transition">
-                    <td className="p-3">
-                      <span className="font-mono font-bold text-white tracking-wider">{c.code}</span>
-                    </td>
-                    <td className="p-3">
-                      <span className="text-green-400 font-bold">
-                        {c.type === "percent" ? `${c.value}%` : `₹${c.value}`}
-                      </span>
-                      <span className="text-gray-500 text-xs ml-1">
-                        ({c.type === "percent" ? "percent" : "flat"})
-                      </span>
-                    </td>
-                    <td className="p-3 text-gray-300">
-                      {c.remainingUses >= 999999 ? "∞" : c.remainingUses}
-                    </td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => toggleCoupon(c._id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                          c.active
-                            ? "bg-green-500/20 text-green-400 hover:bg-green-500/30"
-                            : "bg-red-500/20 text-red-400 hover:bg-red-500/30"
-                        }`}
-                      >
-                        {c.active ? "Active ✅" : "Inactive 🚫"}
-                      </button>
-                    </td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => toggleFeatured(c._id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                          c.featured
-                            ? "bg-amber-500/30 text-amber-300 ring-2 ring-amber-400/50 hover:bg-amber-500/40"
-                            : "bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300"
-                        }`}
-                      >
-                        {c.featured ? "⭐ Featured" : "Set Featured"}
-                      </button>
-                    </td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => deleteCoupon(c._id)}
-                        className="p-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 transition"
-                        title="Delete"
-                      >
-                        <span className="material-symbols-outlined text-red-400 text-base">delete</span>
-                      </button>
-                    </td>
+          <div>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full border border-white/15 rounded-xl overflow-hidden">
+                <thead>
+                  <tr className="bg-white/10">
+                    <th className="p-3 text-left text-sm font-semibold">Code</th>
+                    <th className="p-3 text-left text-sm font-semibold">Discount</th>
+                    <th className="p-3 text-left text-sm font-semibold">Uses Left</th>
+                    <th className="p-3 text-center text-sm font-semibold">Status</th>
+                    <th className="p-3 text-center text-sm font-semibold">
+                      <span className="text-amber-400">⭐ Featured</span>
+                    </th>
+                    <th className="p-3 text-center text-sm font-semibold">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {coupons.map((c) => (
+                    <tr key={c._id} className="border-t border-white/10 hover:bg-white/5 transition">
+                      <td className="p-3">
+                        <span className="font-mono font-bold text-white tracking-wider">{c.code}</span>
+                      </td>
+                      <td className="p-3">
+                        <span className="text-green-400 font-bold">
+                          {c.type === "percent" ? `${c.value}%` : `₹${c.value}`}
+                        </span>
+                        <span className="text-gray-500 text-xs ml-1">
+                          ({c.type === "percent" ? "percent" : "flat"})
+                        </span>
+                      </td>
+                      <td className="p-3 text-gray-300">
+                        {c.remainingUses >= 999999 ? "∞" : c.remainingUses}
+                      </td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={() => toggleCoupon(c._id)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                            c.active
+                              ? "bg-green-500/20 text-green-400 hover:bg-green-500/30"
+                              : "bg-red-500/20 text-red-400 hover:bg-red-500/30"
+                          }`}
+                        >
+                          {c.active ? "Active ✅" : "Inactive 🚫"}
+                        </button>
+                      </td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={() => toggleFeatured(c._id)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                            c.featured
+                              ? "bg-amber-500/30 text-amber-300 ring-2 ring-amber-400/50 hover:bg-amber-500/40"
+                              : "bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300"
+                          }`}
+                        >
+                          {c.featured ? "⭐ Featured" : "Set Featured"}
+                        </button>
+                      </td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={() => deleteCoupon(c._id)}
+                          className="p-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 transition"
+                          title="Delete"
+                        >
+                          <span className="material-symbols-outlined text-red-400 text-base">delete</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards View */}
+            <div className="block md:hidden space-y-4">
+              {coupons.map((c) => (
+                <div
+                  key={c._id}
+                  className={`bg-white/5 border rounded-2xl p-4 space-y-3.5 transition ${
+                    c.featured ? "border-amber-500/45 shadow-[0_0_15px_rgba(245,158,11,0.1)]" : "border-white/10"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono font-bold text-white tracking-wider text-base">
+                      {c.code}
+                    </span>
+                    <span className="text-green-400 font-extrabold text-sm bg-green-500/10 px-2 py-0.5 rounded">
+                      {c.type === "percent" ? `${c.value}% OFF` : `₹${c.value} OFF`}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center text-xs text-gray-400 border-t border-white/5 pt-2">
+                    <span>Discount Type: <strong className="text-gray-200">{c.type === "percent" ? "Percentage" : "Flat Amount"}</strong></span>
+                    <span>Uses Left: <strong className="text-gray-200">{c.remainingUses >= 999999 ? "Unlimited" : c.remainingUses}</strong></span>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-1.5">
+                    {/* Status Toggle */}
+                    <button
+                      onClick={() => toggleCoupon(c._id)}
+                      className={`flex-1 py-2 rounded-lg text-xs font-bold transition ${
+                        c.active
+                          ? "bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30"
+                          : "bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30"
+                      }`}
+                    >
+                      {c.active ? "Active ✅" : "Inactive 🚫"}
+                    </button>
+
+                    {/* Featured Toggle */}
+                    <button
+                      onClick={() => toggleFeatured(c._id)}
+                      className={`flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 ${
+                        c.featured
+                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30"
+                          : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-300"
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-xs">grade</span>
+                      {c.featured ? "Featured" : "Feature"}
+                    </button>
+
+                    {/* Delete Action */}
+                    <button
+                      onClick={() => deleteCoupon(c._id)}
+                      className="px-3 py-2 rounded-lg bg-red-500/20 border border-red-500/30 hover:bg-red-500/30 transition text-red-400 flex items-center justify-center"
+                      title="Delete"
+                    >
+                      <span className="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
