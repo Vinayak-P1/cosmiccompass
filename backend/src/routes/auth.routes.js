@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sendOtp, verifyOtp, me } from "../controllers/auth.controller.js";
+import { sendOtp, verifyOtp, me, updateProfile } from "../controllers/auth.controller.js";
 import { protect } from "../middleware/auth.js";
 
 const router = Router();
@@ -8,7 +8,8 @@ const router = Router();
 router.post("/send-otp", sendOtp);
 router.post("/verify-otp", verifyOtp);
 
-// Protected: get current user
+// Protected: get current user and update profile
 router.get("/me", protect, me);
+router.put("/update-profile", protect, updateProfile);
 
 export default router;

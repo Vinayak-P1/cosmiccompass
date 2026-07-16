@@ -169,18 +169,43 @@ const Login = () => {
   };
 
   // ─── Save name (new user) ──────────────────────────────────────────────────
-  const handleSaveName = () => {
+  const handleSaveName = async () => {
     const auth = window.__tempAuth;
     if (!auth) return;
 
-    const userData = { ...auth.user, name: name || "User" };
-    login(userData, auth.token);
-    delete window.__tempAuth;
+    const trimmedName = name.trim() || "User";
+    setLoading(true);
+    setError("");
 
-    if (userData.isAdmin) {
-      navigate("/admin/dashboard");
-    } else {
-      navigate(redirectPath, { replace: true });
+    try {
+      const res = await fetch(`${API}/api/auth/update-profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
+        },
+        body: JSON.stringify({ name: trimmedName }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        const userData = { ...auth.user, name: trimmedName };
+        login(userData, auth.token);
+        delete window.__tempAuth;
+
+        if (userData.isAdmin) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate(redirectPath, { replace: true });
+        }
+      } else {
+        setError(data.error || "Failed to save name");
+      }
+    } catch (err) {
+      console.error("Save name error:", err);
+      setError("Network error saving name. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

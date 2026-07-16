@@ -201,3 +201,39 @@ export const verifyOtp = async (req, res) => {
 export const me = async (req, res) => {
   res.json({ user: req.user });
 };
+
+// ─── PUT /api/auth/update-profile ─────────────────────────────────────────────
+export const updateProfile = async (req, res) => {
+  try {
+    const { name } = req.body || {};
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: "Name is required" });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.name = name.trim();
+    await user.save();
+
+    console.log(`[AUTH] Profile updated for user ${user.phone}: name = "${user.name}"`);
+
+    res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        profilePic: user.profilePic,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } catch (err) {
+    console.error("[AUTH] updateProfile error:", err);
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+};
+
