@@ -52,7 +52,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-6">
           <NavLink
             to="/astrologers"
             className={({ isActive }) =>
@@ -153,7 +153,7 @@ const Navbar = () => {
 
         {/* Mobile hamburger (hidden on auth pages) */}
         {!(location.pathname === '/login' || location.pathname === '/signup') && (
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setShowMenu((s) => !s)}
               aria-label="Toggle menu"
@@ -167,7 +167,7 @@ const Navbar = () => {
         {/* Mobile menu overlay */}
         {showMenu && (
           <div 
-            className="fixed inset-0 md:hidden"
+            className="fixed inset-0 lg:hidden"
             style={{ backgroundColor: "#0B0B1A", zIndex: 9999, position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}
           >
             <div className="p-6 flex flex-col gap-6">

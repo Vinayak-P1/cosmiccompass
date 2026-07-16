@@ -122,35 +122,33 @@ const ManageCoupons = () => {
               placeholder="Coupon Code"
               value={couponCode}
               onChange={(e) => setCouponCode(e.target.value)}
-              className="bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 outline-none w-full"
             />
-            <div className="flex gap-2">
-              <input
-                type="number"
-                placeholder="Discount"
-                value={discount}
-                onChange={(e) => setDiscount(e.target.value)}
-                className="flex-1 bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-              <select
-                value={discountType}
-                onChange={(e) => setDiscountType(e.target.value)}
-                className="bg-black/30 border border-white/20 rounded-lg px-3 py-3 text-white outline-none"
-              >
-                <option value="flat">₹ Flat</option>
-                <option value="percent">% Off</option>
-              </select>
-            </div>
+            <input
+              type="number"
+              placeholder="Discount Value"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+              className="bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 outline-none w-full"
+            />
+            <select
+              value={discountType}
+              onChange={(e) => setDiscountType(e.target.value)}
+              className="bg-black/30 border border-white/20 rounded-lg px-3 py-3 text-white outline-none w-full cursor-pointer"
+            >
+              <option value="flat">₹ Flat</option>
+              <option value="percent">% Off</option>
+            </select>
             <input
               type="number"
               placeholder="Max Uses (default: unlimited)"
               value={maxUses}
               onChange={(e) => setMaxUses(e.target.value)}
-              className="bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="bg-black/30 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 outline-none w-full"
             />
             <button
               onClick={addCoupon}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 px-6 py-3 rounded-lg font-bold transition-all lg:col-span-2 sm:col-span-2"
+              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 px-6 py-3 rounded-lg font-bold transition-all w-full cursor-pointer"
             >
               <span className="flex items-center justify-center gap-2">
                 <span className="material-symbols-outlined text-base">add</span>
