@@ -59,8 +59,13 @@ const MyBookings = () => {
           <div key={b._id} className="bg-white/10 p-4 rounded-lg w-full max-w-xl mb-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-bold text-lg">{b.question || "General Reading"}</p>
-                <span className={`text-xs px-2 py-0.5 rounded mt-1 inline-block ${b.plan === 'premium' ? 'bg-purple-600' : 'bg-blue-600'}`}>
+                <div className="mt-1">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">My Questions:</span>
+                  <div className="whitespace-pre-wrap text-sm text-white bg-black/20 p-3 rounded-lg border border-white/5 font-medium leading-relaxed">
+                    {b.question || "General Reading"}
+                  </div>
+                </div>
+                <span className={`text-xs px-2 py-0.5 rounded mt-2 inline-block ${b.plan === 'premium' ? 'bg-purple-600' : 'bg-blue-600'}`}>
                   {b.plan === 'premium' ? '👑 Premium' : '⚡ Starter'}
                 </span>
               </div>

@@ -118,7 +118,12 @@ const ManageBookings = () => {
               Plan: <span className="font-bold text-blue-400">{b.plan === 'premium' ? '👑 Premium' : '⚡ Starter'}</span>
               {b.refSource && <span className="ml-3 text-xs bg-white/10 px-2 py-0.5 rounded">QR: {b.refSource}</span>}
               <br/>
-              Question: {b.question || "N/A"}<br/>
+              <div className="mt-2 text-sm text-gray-300">
+                <span className="font-bold text-white block mb-1">Submitted Questions:</span>
+                <div className="bg-black/35 p-3 rounded-lg border border-white/10 whitespace-pre-wrap font-sans text-gray-200">
+                  {b.question || "N/A"}
+                </div>
+              </div>
               Areas: {b.selectedLifeAreas?.join(", ") || "N/A"}<br/>
               Status:{" "}
               <span
