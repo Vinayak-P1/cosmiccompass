@@ -166,7 +166,10 @@ const Navbar = () => {
 
         {/* Mobile menu overlay */}
         {showMenu && (
-          <div className="fixed inset-0 z-50 bg-[#0B0B1A] md:hidden">
+          <div 
+            className="fixed inset-0 md:hidden"
+            style={{ backgroundColor: "#0B0B1A", zIndex: 9999, position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}
+          >
             <div className="p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => { navigate('/'); setShowMenu(false); }}>
