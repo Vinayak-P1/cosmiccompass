@@ -20,7 +20,7 @@ const WhyChooseUs = () => {
         <section className="py-16 px-6 bg-background-dark/95">
             <div className="max-w-6xl mx-auto flex flex-col gap-12">
                 <div className="text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">Why Choose Cosmic Compass?</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">Why Choose UrbanAstro?</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <ChooseReason 

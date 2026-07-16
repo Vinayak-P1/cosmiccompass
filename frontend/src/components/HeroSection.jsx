@@ -29,13 +29,13 @@ const HeroSection = () => {
         </h1>
         <p className="text-lg md:text-xl text-gray-300 max-w-xl">
           Expert guidance on career, love, job, health, money, marriage,
-          relationship and education. Quick, Affordable, and 100% Confidential.
+          relationship and education. Starting at just <span className="text-blue-400 font-bold">₹99</span>.
         </p>
         <button
           onClick={handleConsultationClick}
           className="btn-shine inline-block bg-blue-500 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-[0_0_15px_rgba(0,123,255,0.5)] hover:shadow-[0_0_25px_rgba(0,123,255,0.8)] transition-all duration-300"
         >
-          Expert Consultation shuru kare
+          Get Your Kundli Now — ₹99
         </button>
       </div>
     </section>

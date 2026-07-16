@@ -7,5 +7,5 @@ dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-console.log(`⚡ Cosmic Compass API running on port ${PORT}`);
+console.log(`⚡ UrbanAstro API running on port ${PORT}`);
 });

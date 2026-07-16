@@ -11,14 +11,14 @@ import {
   cleanupOldReports,
 } from "../controllers/booking.controller.js";
 import { submitManualPayment, approveBooking, disapproveBooking } from "../controllers/booking.controller.js";
-import { pdfUpload } from "../middleware/upload.js";
+import { pdfUpload, imageUpload } from "../middleware/upload.js";
 
 const router = Router();
 
 // user bookings and payments
 router.post("/checkout", protect, checkout);
-// Manual QR payment: user submits UTR after scanning QR
-router.post("/manual", protect, submitManualPayment);
+// Manual QR payment: user submits UTR and screenshot after scanning QR
+router.post("/manual", protect, imageUpload.single("screenshot"), submitManualPayment);
 router.get("/me", protect, myBookings);
 
 // Admin approve/disapprove

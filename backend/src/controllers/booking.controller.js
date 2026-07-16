@@ -2,6 +2,7 @@
 import Booking from "../models/Booking.js";
 import Report from "../models/Report.js";
 import Coupon from "../models/Coupon.js";
+import Plan from "../models/Plan.js";
 import cloudinary from "cloudinary";
 // Node 18+ has global fetch. If you are on older Node, install node-fetch.
 const toPaise = (r) => Math.round(Number(r) * 100);
@@ -228,6 +229,9 @@ export const deleteReport = async (req, res) => {
 };
 
 // ---------------- Manual payment submission (QR/UPI flow)
+// Plan-based pricing: starter=299, premium=499 (before coupon)
+const PLAN_PRICES = { starter: 299, premium: 499 };
+
 export const submitManualPayment = async (req, res) => {
   try {
     const {
@@ -241,14 +245,42 @@ export const submitManualPayment = async (req, res) => {
       question = "",
       couponCode = "",
       utr = "",
+      plan = "starter",
+      refSource = "",
     } = req.body;
 
     if (!utr || !utr.trim()) return res.status(400).json({ error: "Transaction id (UTR) is required" });
 
-    const BASE = Number(process.env.BASE_PRICE || 149);
+    let finalLifeAreas = selectedLifeAreas;
+    if (typeof selectedLifeAreas === "string" && selectedLifeAreas.trim()) {
+      try {
+        finalLifeAreas = JSON.parse(selectedLifeAreas);
+      } catch (e) {
+        finalLifeAreas = selectedLifeAreas.split(",").map(x => x.trim()).filter(Boolean);
+      }
+    }
+
+    // Dynamically look up the plan price from the database
+    let basePlan = 299; // Default fallback
+    const planDoc = await Plan.findOne({ slug: String(plan).toLowerCase() });
+    if (planDoc) {
+      basePlan = planDoc.originalPrice;
+    } else {
+      // Try by ID
+      const planDocById = await Plan.findById(plan).catch(() => null);
+      if (planDocById) {
+        basePlan = planDocById.originalPrice;
+      }
+    }
+
     const couponDoc = await getValidCoupon(couponCode);
-    const finalRupees = priceAfterCoupon(BASE, couponDoc);
+    const finalRupees = priceAfterCoupon(basePlan, couponDoc);
     const amountPaise = toPaise(finalRupees);
+
+    let screenshot = "";
+    if (req.file) {
+      screenshot = req.file.path || req.file.url || req.file.secure_url || "";
+    }
 
     // create booking tied to user
     const booking = await Booking.create({
@@ -259,12 +291,15 @@ export const submitManualPayment = async (req, res) => {
       birthTime,
       birthLocation,
       unknownTime,
-      selectedLifeAreas,
+      selectedLifeAreas: finalLifeAreas,
       question,
+      plan,
       amount: amountPaise,
       promoApplied: !!couponDoc,
       coupon: couponDoc ? couponDoc.code : "",
       utr: utr.trim(),
+      screenshot,
+      refSource: refSource || "",
       status: "awaiting_verification",
     });
 

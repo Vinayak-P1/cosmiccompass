@@ -41,19 +41,14 @@ const Navbar = () => {
           className="flex items-center gap-3 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <svg
-            className="w-8 h-8 text-white"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-          <span className="text-white text-xl font-bold">Cosmic Compass</span>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l2.09 6.26L20.18 10l-6.09 1.74L12 18l-2.09-6.26L3.82 10l6.09-1.74L12 2z"/>
+              </svg>
+            </div>
+            <span className="text-white text-xl font-bold tracking-tight" style={{fontFamily:'Inter,sans-serif'}}>Urban<span className="text-blue-400">Astro</span></span>
+          </div>
         </a>
 
         {/* Desktop Navigation */}
@@ -175,8 +170,10 @@ const Navbar = () => {
             <div className="p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => { navigate('/'); setShowMenu(false); }}>
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2z"></path></svg>
-                  <span className="text-white text-lg font-bold">Cosmic Compass</span>
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.09 6.26L20.18 10l-6.09 1.74L12 18l-2.09-6.26L3.82 10l6.09-1.74L12 2z"/></svg>
+                  </div>
+                  <span className="text-white text-lg font-bold tracking-tight" style={{fontFamily:'Inter,sans-serif'}}>Urban<span className="text-blue-400">Astro</span></span>
                 </div>
                 <button onClick={() => setShowMenu(false)} className="text-white">Close</button>
               </div>

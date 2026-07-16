@@ -28,18 +28,22 @@ app.use((req, res, next) => {
   if (req.originalUrl === "/api/payments/webhook") {
     express.raw({ type: "application/json" })(req, res, next);
   } else {
-    express.json({ limit: "10mb" })(req, res, () => {
+    express.json({ limit: "10mb" })(req, res, (err) => {
+      if (err) {
+        console.error("JSON parse error:", err);
+        return res.status(400).json({ error: "Invalid JSON format" });
+      }
       express.urlencoded({ extended: true, limit: "10mb" })(req, res, next);
     });
   }
 });
 
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan("dev"));
 
 // ✅ Health check
 app.get("/health", (req, res) =>
-  res.json({ ok: true, service: "cosmic-compass", time: new Date() })
+  res.json({ ok: true, service: "urbanastro", time: new Date() })
 );
 
 // ✅ CORS test endpoint
@@ -55,5 +59,11 @@ app.use("/api/reports", reportRoutes);
 app.use("/api/astrologers", astrologerRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/pricing", pricingRoutes);
+
+// ✅ Global Error Handler (prevents HTML error responses)
+app.use((err, req, res, next) => {
+  console.error("🔥 Global Error:", err);
+  res.status(500).json({ error: err.message || "Internal Server Error" });
+});
 
 export default app;

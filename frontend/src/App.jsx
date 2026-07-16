@@ -9,6 +9,7 @@ import Consultation from "./pages/Consultation";
 import SelectLifeArea from "./pages/SelectLifeArea";
 import AskQuestion from "./pages/AskQuestion";
 import Payment from "./pages/Payment";
+import SelectPlan from "./pages/SelectPlan";
 import MyBookings from "./pages/MyBookings";
 import AboutAstrologer from "./pages/AboutAstrolger";
 import BirthDetails from "./pages/BirthDetails";
@@ -79,6 +80,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Consultation />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/select-plan"
+          element={
+            <ProtectedRoute>
+              <SelectPlan />
             </ProtectedRoute>
           }
         />

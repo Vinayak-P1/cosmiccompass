@@ -115,6 +115,9 @@ const ManageBookings = () => {
           <div key={b._id} className="p-5 bg-white/10 rounded-lg mb-4">
             <h2 className="text-xl font-bold">{b.name} — {b.email}</h2>
             <p className="text-sm text-gray-300">
+              Plan: <span className="font-bold text-blue-400">{b.plan === 'premium' ? '👑 Premium' : '⚡ Starter'}</span>
+              {b.refSource && <span className="ml-3 text-xs bg-white/10 px-2 py-0.5 rounded">QR: {b.refSource}</span>}
+              <br/>
               Question: {b.question || "N/A"}<br/>
               Areas: {b.selectedLifeAreas?.join(", ") || "N/A"}<br/>
               Status:{" "}
@@ -139,6 +142,20 @@ const ManageBookings = () => {
 
             {b.utr && (
               <p className="mt-2 text-sm">Transaction ID: <span className="font-mono text-sm">{b.utr}</span></p>
+            )}
+            {b.screenshot && (
+              <div className="mt-2 text-sm">
+                Payment Screenshot:{" "}
+                <a
+                  href={b.screenshot}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-400 underline inline-flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-sm">open_in_new</span>
+                  View Screenshot Proof
+                </a>
+              </div>
             )}
 
             {b.report ? (

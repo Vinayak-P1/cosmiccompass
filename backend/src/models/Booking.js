@@ -12,6 +12,13 @@ const bookingSchema = new mongoose.Schema(
     selectedLifeAreas: { type: [String], default: [] },
     question: String,
 
+    // Plan
+    plan: {
+      type: String,
+      default: "starter",
+    },
+    screenshot: { type: String, default: "" },
+
     // Pricing
     amount: { type: Number, required: true },
     promoApplied: { type: Boolean, default: false },
@@ -29,10 +36,13 @@ const bookingSchema = new mongoose.Schema(
     // Manual payment UTR / transaction id when user pays via QR/UPI
     utr: { type: String, default: "" },
 
+    // QR tracking — which location's QR brought this user
+    refSource: { type: String, default: "" },
+
     // Report linkage
     report: { type: mongoose.Schema.Types.ObjectId, ref: "Report" },
     // Astrologer linkage
-astrologer: { type: mongoose.Schema.Types.ObjectId, ref: "Astrologer" },
+    astrologer: { type: mongoose.Schema.Types.ObjectId, ref: "Astrologer" },
   },
   { timestamps: true }
 );

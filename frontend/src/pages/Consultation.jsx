@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Consultation = () => {
     const navigate=useNavigate();
+    const [searchParams] = useSearchParams();
     const [name,setName]=useState("");
     const [birthDate,setBirthDate]=useState("");
     const [birthTime,setBirthTime]=useState("");
     const[birthLocation,setBirthLocation]=useState("");
     const [unknownTime, setUnknownTime] = useState(false);
+
+    // QR tracking — capture ref parameter from URL
+    useEffect(() => {
+      const ref = searchParams.get('ref');
+      if (ref) {
+        localStorage.setItem('urbanastro_ref', ref);
+      }
+    }, [searchParams]);
+
    const handleSubmit=(e)=>{
     e.preventDefault();
     if(!name || !birthDate || (!birthTime && !unknownTime) || !birthLocation){
@@ -15,16 +25,18 @@ const Consultation = () => {
         return;
     }
 
-    // Save consultation data
+    // Save consultation data (include ref source)
+    const refSource = localStorage.getItem('urbanastro_ref') || '';
     localStorage.setItem('consultationData', JSON.stringify({
         name,
         birthDate,
         birthTime: unknownTime ? '' : birthTime,
         birthLocation,
-        unknownTime
+        unknownTime,
+        refSource
     }));
 
-    navigate('/select-life-area');
+    navigate('/select-plan');
    }
   return (
     // ⭐️ 1. OUTER CONTAINER FIX ⭐️
@@ -39,19 +51,19 @@ const Consultation = () => {
           
           {/* Step Progress */}
           <div className="text-center">
-            <p className="text-sm font-medium text-primary">Step 1 of 4</p>
+            <p className="text-sm font-medium text-primary">Step 1 of 5</p>
             <div className="mt-2 h-1.5 w-full rounded-full bg-blue-500/20">
-              <div className="h-1.5 rounded-full bg-blue-500" style={{ width: "25%" }}></div>
+              <div className="h-1.5 rounded-full bg-blue-500" style={{ width: "20%" }}></div>
             </div>
           </div>
 
           {/* Heading */}
           <div className="text-center">
             <h1 className="text-3xl font-bold text-white sm:text-4xl">
-              Start Your Expert Consultation
+              Start Your Consultation
             </h1>
             <p className="mt-2 text-base text-gray-300">
-              Enter your birth details to begin your cosmic journey.
+              Enter your birth details to begin.
             </p>
           </div>
 

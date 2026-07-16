@@ -51,7 +51,7 @@ const Login = () => {
       }
     } catch (err) {
       console.error("LOGIN ERROR:", err);
-      alert("Server error during login");
+      alert("Server error during login: " + err.message);
     }
 
   };
@@ -75,13 +75,13 @@ const Login = () => {
       if (res.ok && data.user && data.token) {
         login(data.user, data.token);
         alert("Signup successful!");
-        navigate("/");
+        navigate(redirectPath, { replace: true });
       } else {
         alert(data.error || "Signup failed");
       }
     } catch (err) {
       console.error("SIGNUP ERROR:", err);
-      alert("Server error during signup");
+      alert("Server error during signup: " + err.message);
     }
   };
 
@@ -140,13 +140,13 @@ const Login = () => {
       <div className="relative w-full max-w-md bg-white/10 dark:bg-black/30 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.6)] border border-white/10 overflow-hidden z-10">
         <div className="p-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-white drop-shadow-lg">
-              Cosmic Compass
+            <h1 className="text-4xl font-extrabold text-white drop-shadow-lg" style={{fontFamily:'Inter,sans-serif'}}>
+              Urban<span className="text-blue-400">Astro</span>
             </h1>
             <p className="text-white/70 mt-2">
               {tab === "login"
-                ? "Your journey to self-discovery starts here."
-                : "Create your cosmic account"}
+                ? "Your Stars, Your City."
+                : "Create your account"}
             </p>
           </div>
 
