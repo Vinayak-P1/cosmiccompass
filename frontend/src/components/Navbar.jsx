@@ -232,7 +232,7 @@ const Navbar = () => {
                   <div className="flex items-center gap-4">
                     <img src={user.profilePic ? (user.profilePic.startsWith('http') ? user.profilePic : `${API}${user.profilePic}`) : "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="profile" className="w-12 h-12 rounded-full" />
                     <div className="flex-1">
-                      <div className="font-semibold text-white">{user.name || user.email}</div>
+                      <div className="font-semibold text-white">{user.name || user.phone || "User"}</div>
                       <div className="flex gap-3 items-center mt-1">
                         {user.isAdmin && (
                           <button onClick={() => { navigate('/admin/dashboard'); setShowMenu(false); }} className="text-sm text-white/80 underline">Admin Panel</button>
