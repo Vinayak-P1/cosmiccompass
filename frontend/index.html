@@ -49,6 +49,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <title>UrbanAstro — Your Stars, Your City</title>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Google Analytics 4 (GA4) -->
+    <script>
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-NWMNKNCZ0E';
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'G-NWMNKNCZ0E', { send_page_view: false });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

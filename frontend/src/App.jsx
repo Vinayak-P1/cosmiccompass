@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -63,6 +63,17 @@ const AdminRoute = ({ children }) => {
 };
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Only track page views in production
+    if (import.meta.env.PROD && window.gtag) {
+      window.gtag("config", "G-NWMNKNCZ0E", {
+        page_path: location.pathname + location.search,
+      });
+    }
+  }, [location]);
+
   return (
     <div>
       <Navbar />
