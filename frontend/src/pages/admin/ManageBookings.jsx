@@ -142,6 +142,7 @@ const ManageBookings = () => {
             </p>
 
             <div className="mt-2 text-sm text-gray-300">
+              <div>Mobile Number: <span className="font-mono font-bold text-emerald-400">{b.phone || b.user?.phone || "No Phone"}</span></div>
               <div>Birth Date: <span className="font-semibold text-white">{b.birthDate || 'N/A'}</span></div>
               <div>Birth Time: <span className="font-semibold text-white">{b.birthTime || (b.unknownTime ? 'Unknown' : 'N/A')}</span></div>
               <div>Birth Place: <span className="font-semibold text-white">{b.birthLocation || 'N/A'}</span></div>
