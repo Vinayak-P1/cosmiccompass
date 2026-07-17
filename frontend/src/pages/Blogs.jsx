@@ -2,11 +2,27 @@ import React, { useEffect } from 'react';
 
 const Blogs = () => {
   useEffect(() => {
-    document.title = "Ask AI — AI Astrology Assistant | UrbanAstro";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", "Get instant, personalized answers to your burning astrology questions with our advanced Ask AI astrology assistant at UrbanAstro.");
-    }
+    const title = "Ask AI — AI Astrology Assistant | UrbanAstro";
+    const desc = "Get instant, personalized answers to your burning astrology questions with our advanced Ask AI astrology assistant at UrbanAstro.";
+    const url = "https://urbanastro.space/askai";
+
+    document.title = title;
+
+    const setMeta = (propertyOrName, content, attr = "property") => {
+      const el = document.querySelector(`meta[${attr}="${propertyOrName}"]`);
+      if (el) el.setAttribute("content", content);
+    };
+
+    setMeta("description", desc, "name");
+    setMeta("og:title", title);
+    setMeta("og:description", desc);
+    setMeta("og:url", url);
+    setMeta("twitter:title", title);
+    setMeta("twitter:description", desc);
+    setMeta("twitter:url", url);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", url);
   }, []);
   const dummyQuestions = [
     {

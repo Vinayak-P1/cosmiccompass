@@ -4,11 +4,27 @@ const API = import.meta.env.VITE_API_URL || "";
 const Astrologers = () => {
   const [list, setList] = useState([]);
 useEffect(() => {
-  document.title = "Verified Astrologers — Consult Online | UrbanAstro";
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) {
-    metaDesc.setAttribute("content", "Connect with verified Vedic astrologers at UrbanAstro. Get accurate astrological predictions, career guidance, love forecasts, and Kundli advice starting at ₹99.");
-  }
+  const title = "Verified Astrologers — Consult Online | UrbanAstro";
+  const desc = "Connect with verified Vedic astrologers at UrbanAstro. Get accurate predictions, career advice, love forecasts, and Kundli starting at ₹99.";
+  const url = "https://urbanastro.space/astrologers";
+
+  document.title = title;
+
+  const setMeta = (propertyOrName, content, attr = "property") => {
+    const el = document.querySelector(`meta[${attr}="${propertyOrName}"]`);
+    if (el) el.setAttribute("content", content);
+  };
+
+  setMeta("description", desc, "name");
+  setMeta("og:title", title);
+  setMeta("og:description", desc);
+  setMeta("og:url", url);
+  setMeta("twitter:title", title);
+  setMeta("twitter:description", desc);
+  setMeta("twitter:url", url);
+
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute("href", url);
 
   (async () => {
     try {

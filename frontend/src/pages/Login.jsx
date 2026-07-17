@@ -25,11 +25,27 @@ const Login = () => {
 
   // Dynamic SEO meta updates
   useEffect(() => {
-    document.title = "Secure Login / Signup | UrbanAstro";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", "Log in or sign up securely on UrbanAstro using your mobile number. Access your personalized astrology consultations, bookings, and reports.");
-    }
+    const title = "Secure Login / Signup | UrbanAstro";
+    const desc = "Log in or sign up securely on UrbanAstro using your mobile number. Access your personalized astrology consultations, bookings, and reports.";
+    const url = "https://urbanastro.space/login";
+
+    document.title = title;
+
+    const setMeta = (propertyOrName, content, attr = "property") => {
+      const el = document.querySelector(`meta[${attr}="${propertyOrName}"]`);
+      if (el) el.setAttribute("content", content);
+    };
+
+    setMeta("description", desc, "name");
+    setMeta("og:title", title);
+    setMeta("og:description", desc);
+    setMeta("og:url", url);
+    setMeta("twitter:title", title);
+    setMeta("twitter:description", desc);
+    setMeta("twitter:url", url);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", url);
   }, []);
 
   // Focus phone input on mount

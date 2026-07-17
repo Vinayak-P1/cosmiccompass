@@ -2,11 +2,27 @@ import React, { useEffect } from "react";
 
 const AboutAstrologer = () => {
   useEffect(() => {
-    document.title = "About Stella Nova — Chief Astrologer | UrbanAstro";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", "Meet Stella Nova, Chief Astrologer at UrbanAstro. Blending Vedic and Western astrology for over a decade to guide you on career, love, and growth.");
-    }
+    const title = "About Stella Nova — Chief Astrologer | UrbanAstro";
+    const desc = "Meet Stella Nova, Chief Astrologer at UrbanAstro. Blending Vedic and Western astrology for over a decade to guide you on career, love, and growth.";
+    const url = "https://urbanastro.space/about-astrologer";
+
+    document.title = title;
+
+    const setMeta = (propertyOrName, content, attr = "property") => {
+      const el = document.querySelector(`meta[${attr}="${propertyOrName}"]`);
+      if (el) el.setAttribute("content", content);
+    };
+
+    setMeta("description", desc, "name");
+    setMeta("og:title", title);
+    setMeta("og:description", desc);
+    setMeta("og:url", url);
+    setMeta("twitter:title", title);
+    setMeta("twitter:description", desc);
+    setMeta("twitter:url", url);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", url);
   }, []);
   return (
     <div className="bg-background-dark font-display text-gray-200 min-h-screen">
