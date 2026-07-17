@@ -1,5 +1,6 @@
 import Astrologer from "../models/Astrologer.js";
 import cloudinary from "cloudinary";
+import mongoose from "mongoose";
 
 // ✅ Create new astrologer (Admin only)
 export const createAstrologer = async (req, res) => {
@@ -37,12 +38,36 @@ export const listAstrologers = async (req, res) => {
   }
 };
 
-// ✅ Get astrologer by ID
+// ✅ Get astrologer by ID or Slug
 export const getAstrologerById = async (req, res) => {
   try {
-    const astro = await Astrologer.findById(req.params.id);
+    const { id } = req.params;
+    let astro = null;
+
+    // 1. Try to find by MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      astro = await Astrologer.findById(id);
+    }
+
+    // 2. Try to find by slug
+    if (!astro) {
+      astro = await Astrologer.findOne({ slug: id });
+    }
+
+    // 3. Fallback: Generate slug from name of legacy records and match
+    if (!astro) {
+      const allAstrologers = await Astrologer.find();
+      astro = allAstrologers.find(a => {
+        const generatedSlug = a.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+        return generatedSlug === id;
+      });
+    }
+
     if (!astro) return res.status(404).json({ error: "Astrologer not found" });
-    res.json({ success: true, astro });
+    res.json({ success: true, astro, item: astro });
   } catch (e) {
     console.error("❌ Get Astrologer Error:", e);
     res.status(500).json({ error: e.message });

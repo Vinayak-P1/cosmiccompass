@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams, useParams, useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -16,27 +16,55 @@ const defaultAstrologer = {
 const AboutAstrologer = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
   const [astrologer, setAstrologer] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const astrologerId = searchParams.get("id");
-
   useEffect(() => {
-    // 1. Check if astrologer details are passed via router state
+    const legacyId = searchParams.get("id");
+
+    // 1. Permanent Redirect: handle legacy path '/about-astrologer?id=xxx'
+    if (location.pathname.includes("/about-astrologer") && legacyId) {
+      (async () => {
+        try {
+          const res = await fetch(`${API}/api/astrologers/${legacyId}`);
+          const data = await res.json();
+          const astroData = data.astro || data.item;
+          if (data.success && astroData) {
+            const resolvedSlug = astroData.slug || astroData.name
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "");
+            navigate(`/astrologers/${resolvedSlug}`, { replace: true, state: { astrologer: astroData } });
+          } else {
+            navigate("/astrologers", { replace: true });
+          }
+        } catch (err) {
+          console.error("Legacy redirect fetch error:", err);
+          navigate("/astrologers", { replace: true });
+        }
+      })();
+      return;
+    }
+
+    // 2. Check if astrologer details are passed via router state
     if (location.state?.astrologer) {
       setAstrologer(location.state.astrologer);
       setLoading(false);
       return;
     }
 
-    // 2. If ID exists in URL, fetch details from API
-    if (astrologerId) {
+    // 3. Fetch from API if slug is present
+    if (slug) {
       (async () => {
         try {
-          const res = await fetch(`${API}/api/astrologers/${astrologerId}`);
+          const res = await fetch(`${API}/api/astrologers/${slug}`);
           const data = await res.json();
-          if (data.success && data.item) {
-            setAstrologer(data.item);
+          const astroData = data.astro || data.item;
+          if (data.success && astroData) {
+            setAstrologer(astroData);
           } else {
             setAstrologer(defaultAstrologer);
           }
@@ -48,21 +76,24 @@ const AboutAstrologer = () => {
         }
       })();
     } else {
-      // 3. Fallback to default Stella Nova
+      // 4. Default fallback
       setAstrologer(defaultAstrologer);
       setLoading(false);
     }
-  }, [location.state, astrologerId]);
+  }, [location.state, slug, searchParams, location.pathname, navigate]);
 
   // Dynamic SEO meta updates based on the loaded astrologer
   useEffect(() => {
     if (!astrologer) return;
     
+    const activeSlug = astrologer.slug || astrologer.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+    
     const title = `About ${astrologer.name} — Expert Astrologer | UrbanAstro`;
     const desc = astrologer.bio ? astrologer.bio.substring(0, 150) + "..." : `Meet ${astrologer.name}, professional astrologer at UrbanAstro. Connect for personalized consultation.`;
-    const url = astrologerId 
-      ? `https://urbanastro.space/about-astrologer?id=${astrologerId}`
-      : "https://urbanastro.space/about-astrologer";
+    const url = `https://urbanastro.space/astrologers/${activeSlug}`;
 
     document.title = title;
 
@@ -81,7 +112,7 @@ const AboutAstrologer = () => {
 
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute("href", url);
-  }, [astrologer, astrologerId]);
+  }, [astrologer]);
 
   if (loading) {
     return (

@@ -14,6 +14,7 @@ import couponRoutes from "./routes/coupon.routes.js";
 import pricingRoutes from "./routes/pricing.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import Astrologer from "./models/Astrologer.js";
 
 // ✅ Fix for __dirname and __filename in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -126,6 +127,58 @@ app.use("/api/reports", reportRoutes);
 app.use("/api/astrologers", astrologerRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/pricing", pricingRoutes);
+
+// ✅ Dynamic sitemap.xml endpoint with 10-minute caching
+let cachedSitemap = null;
+let cacheTimestamp = 0;
+
+app.get("/sitemap.xml", async (req, res) => {
+  try {
+    const now = Date.now();
+    const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
+    if (cachedSitemap && (now - cacheTimestamp < CACHE_DURATION)) {
+      res.header("Content-Type", "application/xml");
+      res.header("Cache-Control", "public, max-age=600");
+      return res.status(200).send(cachedSitemap);
+    }
+
+    const astrologers = await Astrologer.find({ isActive: { $ne: false } });
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // Static public pages
+    xml += `  <url>\n    <loc>https://urbanastro.space/</loc>\n    <lastmod>2026-07-18</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
+    xml += `  <url>\n    <loc>https://urbanastro.space/astrologers</loc>\n    <lastmod>2026-07-18</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+    xml += `  <url>\n    <loc>https://urbanastro.space/askai</loc>\n    <lastmod>2026-07-18</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+    xml += `  <url>\n    <loc>https://urbanastro.space/login</loc>\n    <lastmod>2026-07-18</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+
+    // Dynamic active astrologer profile pages
+    astrologers.forEach((a) => {
+      const slug = a.slug || a.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      const dateStr = a.updatedAt
+        ? new Date(a.updatedAt).toISOString().split("T")[0]
+        : "2026-07-18";
+      xml += `  <url>\n    <loc>https://urbanastro.space/astrologers/${slug}</loc>\n    <lastmod>${dateStr}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+    });
+
+    xml += `</urlset>`;
+
+    cachedSitemap = xml;
+    cacheTimestamp = now;
+
+    res.header("Content-Type", "application/xml");
+    res.header("Cache-Control", "public, max-age=600");
+    res.status(200).send(xml);
+  } catch (err) {
+    console.error("Sitemap generation error:", err);
+    res.status(500).send("Error generating sitemap");
+  }
+});
 
 // ✅ Global Error Handler (prevents html error leaks, keeps messages generic in production)
 app.use((err, req, res, next) => {

@@ -48,18 +48,21 @@ useEffect(() => {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-center">Our Astrologers</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {list.map(a => (
-          <div 
-            key={a._id} 
-            onClick={() => navigate(`/about-astrologer?id=${a._id}`, { state: { astrologer: a } })}
-            className="p-4 bg-white/10 rounded cursor-pointer hover:bg-white/15 hover:scale-[1.02] transition-all duration-300"
-          >
-            <img src={a.imageUrl} className="w-full h-40 object-cover rounded mb-2" />
-            <div className="font-bold">{a.name}</div>
-            <div className="text-sm text-gray-300">{a.expertise} · {a.experience} yrs</div>
-            <div className="text-sm mt-1">{a.bio}</div>
-          </div>
-        ))}
+        {list.map(a => {
+          const slug = a.slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+          return (
+            <div 
+              key={a._id} 
+              onClick={() => navigate(`/astrologers/${slug}`, { state: { astrologer: a } })}
+              className="p-4 bg-white/10 rounded cursor-pointer hover:bg-white/15 hover:scale-[1.02] transition-all duration-300"
+            >
+              <img src={a.imageUrl} className="w-full h-40 object-cover rounded mb-2" />
+              <div className="font-bold">{a.name}</div>
+              <div className="text-sm text-gray-300">{a.expertise} · {a.experience} yrs</div>
+              <div className="text-sm mt-1">{a.bio}</div>
+            </div>
+          );
+        })}
         </div>
       </div>
     </div>

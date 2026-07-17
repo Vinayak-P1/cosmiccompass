@@ -84,6 +84,7 @@ function App() {
         <Route path="/askai" element={<Blogs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about-astrologer" element={<AboutAstrologer />} />
+        <Route path="/astrologers/:slug" element={<AboutAstrologer />} />
 
         {/* 🔒 User Protected Routes */}
         <Route
