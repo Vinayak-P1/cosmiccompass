@@ -12,10 +12,11 @@
 /* ... (btn-shine, star-dust, orbit-lines ki baaki CSS yahan paste karein) ... */
 
 /* 3. Dark Mode Fix: Ensure body gets the dark background */
-body {
-    /* Using the background-dark color defined in your Tailwind config */
+html, body, #root {
     background-color: #111121; 
     color: #f6f6f8; /* Base text color for dark mode */
+    max-width: 100%;
+    overflow-x: hidden;
 }
 @keyframes stars {
   0% {

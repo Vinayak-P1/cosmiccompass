@@ -215,13 +215,13 @@ const Login = () => {
     handleSendOtp();
   };
   return (
-    <div className="font-display min-h-screen flex items-center justify-center py-20 px-4 bg-[#030014] text-white relative overflow-hidden">
+    <div className="font-display min-h-screen w-full max-w-full flex flex-col items-center justify-center py-20 px-4 bg-[#030014] text-white relative overflow-x-hidden">
       {/* 🌌 Starfield Background */}
       <div className="absolute inset-0 bg-[radial-gradient(white,rgba(255,255,255,0.15)_1px,transparent_40px),radial-gradient(white,rgba(255,255,255,0.1)_1px,transparent_30px),radial-gradient(white,rgba(255,255,255,0.05)_2px,transparent_40px),radial-gradient(rgba(255,255,255,0.25),rgba(255,255,255,0.05)_2px,transparent_30px)] bg-[size:550px_550px,350px_350px,250px_250px,150px_150px] bg-[position:0_0,40px_60px,130px_270px,70px_100px] animate-stars" />
       <div className="absolute inset-0 bg-gradient-to-br from-[#0b0b20]/40 via-[#0b0b20]/30 to-[#1b0033]/20 pointer-events-none" />
 
       {/* Card */}
-      <div className="relative w-full max-w-md bg-white/10 dark:bg-black/30 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.6)] border border-white/10 overflow-hidden z-10">
+      <div className="relative w-full max-w-md mx-auto bg-white/10 dark:bg-black/30 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.6)] border border-white/10 overflow-hidden z-10">
         <div className="p-6 sm:p-8">
           {/* Logo */}
           <div className="text-center mb-8">
