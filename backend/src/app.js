@@ -111,7 +111,7 @@ app.use("/api/auth/verify-otp", authLimiter);
 
 // ✅ Health check
 app.get("/health", (req, res) =>
-  res.json({ ok: true, service: "urbanastro", time: new Date() })
+  res.json({ status: "ok", service: "UrbanAstro API" })
 );
 
 // ✅ CORS test endpoint
