@@ -140,6 +140,7 @@ const AboutAstrologer = () => {
             <img
               src={currentAstrologer.imageUrl}
               alt={`Astrologer ${currentAstrologer.name}`}
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>
@@ -153,7 +154,7 @@ const AboutAstrologer = () => {
               {currentAstrologer.experience}+ Years Experience
             </p>
             {currentAstrologer.expertise && (
-              <p className="text-gray-400 text-sm mt-1">
+              <p className="text-gray-300 text-sm mt-1">
                 Expertise: {currentAstrologer.expertise}
               </p>
             )}

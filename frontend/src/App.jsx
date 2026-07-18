@@ -77,118 +77,120 @@ function App() {
   return (
     <div>
       <Navbar />
-      <Routes>
-        {/* 🌐 Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/astrologers" element={<Astrologers />} />
-        <Route path="/askai" element={<Blogs />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about-astrologer" element={<AboutAstrologer />} />
-        <Route path="/astrologers/:slug" element={<AboutAstrologer />} />
+      <main id="main-content">
+        <Routes>
+          {/* 🌐 Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/astrologers" element={<Astrologers />} />
+          <Route path="/askai" element={<Blogs />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/about-astrologer" element={<AboutAstrologer />} />
+          <Route path="/astrologers/:slug" element={<AboutAstrologer />} />
 
-        {/* 🔒 User Protected Routes */}
-        <Route
-          path="/consultation"
-          element={
-            <ProtectedRoute>
-              <Consultation />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/select-plan"
-          element={
-            <ProtectedRoute>
-              <SelectPlan />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/select-life-area"
-          element={
-            <ProtectedRoute>
-              <SelectLifeArea />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/ask-question"
-          element={
-            <ProtectedRoute>
-              <AskQuestion />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/payment"
-          element={
-            <ProtectedRoute>
-              <Payment />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/my-bookings"
-          element={
-            <ProtectedRoute>
-              <MyBookings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/birth-details"
-          element={
-            <ProtectedRoute>
-              <BirthDetails />
-            </ProtectedRoute>
-          }
-        />
+          {/* 🔒 User Protected Routes */}
+          <Route
+            path="/consultation"
+            element={
+              <ProtectedRoute>
+                <Consultation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/select-plan"
+            element={
+              <ProtectedRoute>
+                <SelectPlan />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/select-life-area"
+            element={
+              <ProtectedRoute>
+                <SelectLifeArea />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ask-question"
+            element={
+              <ProtectedRoute>
+                <AskQuestion />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-bookings"
+            element={
+              <ProtectedRoute>
+                <MyBookings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/birth-details"
+            element={
+              <ProtectedRoute>
+                <BirthDetails />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* 🧠 Admin Routes */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <AdminRoute>
-              <AdminDashboard />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/astrologers"
-          element={
-            <AdminRoute>
-              <ManageAstrologers />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/coupons"
-          element={
-            <AdminRoute>
-              <ManageCoupons />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/pricing"
-          element={
-            <AdminRoute>
-              <ManagePricing />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/bookings"
-          element={
-            <AdminRoute>
-              <ManageBookings />
-            </AdminRoute>
-          }
-        />
+          {/* 🧠 Admin Routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/astrologers"
+            element={
+              <AdminRoute>
+                <ManageAstrologers />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/coupons"
+            element={
+              <AdminRoute>
+                <ManageCoupons />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/pricing"
+            element={
+              <AdminRoute>
+                <ManagePricing />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/bookings"
+            element={
+              <AdminRoute>
+                <ManageBookings />
+              </AdminRoute>
+            }
+          />
 
-        {/* 🚫 Fallback */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          {/* 🚫 Fallback */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
     </div>
   );
 }

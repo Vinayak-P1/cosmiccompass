@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { useNavigate, NavLink, useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import menuIcon from "../assets/menu_icon.svg";
 import crossIcon from "../assets/cross_icon.png";
@@ -37,9 +37,9 @@ const Navbar = () => {
   return (
     <header className="absolute top-0 left-0 right-0 z-10 p-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
-        <a
-          className="flex items-center gap-3 cursor-pointer"
-          onClick={() => navigate("/")}
+        <Link
+          to="/"
+          className="flex items-center gap-3 cursor-pointer no-underline"
         >
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
@@ -49,7 +49,7 @@ const Navbar = () => {
             </div>
             <span className="text-white text-xl font-bold tracking-tight" style={{fontFamily:'Inter,sans-serif'}}>Urban<span className="text-blue-400">Astro</span></span>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-6">
@@ -172,12 +172,12 @@ const Navbar = () => {
           >
             <div className="p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 cursor-pointer" onClick={() => { navigate('/'); setShowMenu(false); }}>
+                <Link to="/" onClick={() => setShowMenu(false)} className="flex items-center gap-2 cursor-pointer no-underline">
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.09 6.26L20.18 10l-6.09 1.74L12 18l-2.09-6.26L3.82 10l6.09-1.74L12 2z"/></svg>
                   </div>
                   <span className="text-white text-lg font-bold tracking-tight" style={{fontFamily:'Inter,sans-serif'}}>Urban<span className="text-blue-400">Astro</span></span>
-                </div>
+                </Link>
                 <button onClick={() => setShowMenu(false)} className="text-white">Close</button>
               </div>
 

@@ -46,7 +46,7 @@ const Blogs = () => {
     <div className="min-h-screen w-full bg-[#030014] font-display text-white bg-[radial-gradient(white,rgba(255,255,255,0.15)_1px,transparent_40px),radial-gradient(white,rgba(255,255,255,0.1)_1px,transparent_30px),radial-gradient(white,rgba(255,255,255,0.05)_2px,transparent_40px),radial-gradient(rgba(255,255,255,0.25),rgba(255,255,255,0.05)_2px,transparent_30px)] bg-[size:550px_550px,350px_350px,250px_250px,150px_150px] bg-[position:0_0,40px_60px,130px_270px,70px_100px]" style={{background: "linear-gradient(to bottom right, rgba(11,11,32,0.9), rgba(11,11,32,0.8), rgba(27,0,51,0.7)), radial-gradient(white,rgba(255,255,255,0.15)_1px,transparent 40px), radial-gradient(white,rgba(255,255,255,0.1)_1px,transparent 30px), radial-gradient(white,rgba(255,255,255,0.05)_2px,transparent 40px), radial-gradient(rgba(255,255,255,0.25),rgba(255,255,255,0.05)_2px,transparent 30px)", backgroundSize: "550px 550px, 350px 350px, 250px 250px, 150px 150px", backgroundPosition: "0 0, 40px 60px, 130px 270px, 70px 100px"}}>
       
       {/* Main Content */}
-      <main className="flex flex-col min-h-screen pt-32 pb-20 px-6">
+      <div className="flex flex-col min-h-screen pt-32 pb-20 px-6">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
@@ -101,7 +101,7 @@ const Blogs = () => {
             </button>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

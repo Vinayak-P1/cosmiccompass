@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -51,16 +51,17 @@ useEffect(() => {
         {list.map(a => {
           const slug = a.slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
           return (
-            <div 
+            <Link 
               key={a._id} 
-              onClick={() => navigate(`/astrologers/${slug}`, { state: { astrologer: a } })}
-              className="p-4 bg-white/10 rounded cursor-pointer hover:bg-white/15 hover:scale-[1.02] transition-all duration-300"
+              to={`/astrologers/${slug}`}
+              state={{ astrologer: a }}
+              className="p-4 bg-white/10 rounded block hover:bg-white/15 hover:scale-[1.02] transition-all duration-300 text-left no-underline"
             >
-              <img src={a.imageUrl} className="w-full h-40 object-cover rounded mb-2" />
-              <div className="font-bold">{a.name}</div>
+              <img src={a.imageUrl} loading="lazy" alt={a.name} className="w-full h-40 object-cover rounded mb-2" />
+              <div className="font-bold text-white">{a.name}</div>
               <div className="text-sm text-gray-300">{a.expertise} · {a.experience} yrs</div>
-              <div className="text-sm mt-1">{a.bio}</div>
-            </div>
+              <div className="text-sm mt-1 text-gray-300">{a.bio}</div>
+            </Link>
           );
         })}
         </div>
