@@ -11,8 +11,8 @@ import ReadytoExplore from '../components/ReadytoExplore';
 
 const HomePage = () => {
     useEffect(() => {
-        const title = "UrbanAstro — Your Stars, Your City";
-        const desc = "UrbanAstro — Expert astrology consultation starting at ₹99. Get personalized Kundli, life guidance & astrologer calls. Your Stars, Your City.";
+        const title = "UrbanAstro – Online Astrology Consultation, Kundli & Expert Astrologers";
+        const desc = "Talk to verified astrologers online for career, love, marriage, health, business and Kundli guidance. Get instant astrology consultations and personalized insights with UrbanAstro.";
         const url = "https://urbanastro.space/";
 
         document.title = title;
