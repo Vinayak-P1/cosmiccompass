@@ -283,16 +283,54 @@ const Payment = () => {
 
             {/* Direct UPI Intent Link / Pay Button */}
             <div className="space-y-3.5">
-              <a
-                href={upiIntentLink}
-                className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-extrabold rounded-xl text-lg shadow-[0_4px_20px_rgba(16,185,129,0.3)] transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_4px_25px_rgba(16,185,129,0.4)] text-center animate-pulse"
-              >
-                <span className="material-symbols-outlined">smartphone</span>
-                Pay ₹{finalAmount} via UPI App
-              </a>
-              <p className="text-[11px] sm:text-xs text-center text-gray-400">
-                📱 Recommended for mobile users (Opens GPay, PhonePe, Paytm, BHIM directly).
-              </p>
+              {/iPad|iPhone|iPod/.test(navigator.userAgent) ? (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-gray-300 mb-1.5 text-center">📱 Select your UPI App (For iPhone users):</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <a
+                      href={`phonepe://pay?pa=${UPI_ID}&pn=UrbanAstro&am=${finalAmount}&cu=INR`}
+                      className="flex flex-col items-center justify-center py-3 bg-purple-600/20 hover:bg-purple-600/35 border border-purple-500/30 rounded-xl transition-all text-center text-xs font-bold text-purple-300"
+                    >
+                      <span className="material-symbols-outlined text-lg mb-1">payments</span>
+                      PhonePe
+                    </a>
+                    <a
+                      href={`gpay://upi/pay?pa=${UPI_ID}&pn=UrbanAstro&am=${finalAmount}&cu=INR`}
+                      className="flex flex-col items-center justify-center py-3 bg-blue-600/20 hover:bg-blue-600/35 border border-blue-500/30 rounded-xl transition-all text-center text-xs font-bold text-blue-300"
+                    >
+                      <span className="material-symbols-outlined text-lg mb-1">payments</span>
+                      GPay
+                    </a>
+                    <a
+                      href={`paytmmp://pay?pa=${UPI_ID}&pn=UrbanAstro&am=${finalAmount}&cu=INR`}
+                      className="flex flex-col items-center justify-center py-3 bg-sky-600/20 hover:bg-sky-600/35 border border-sky-500/30 rounded-xl transition-all text-center text-xs font-bold text-sky-300"
+                    >
+                      <span className="material-symbols-outlined text-lg mb-1">payments</span>
+                      Paytm
+                    </a>
+                  </div>
+                  <a
+                    href={upiIntentLink}
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-xl text-sm transition-all text-center mt-2"
+                  >
+                    <span className="material-symbols-outlined text-sm">smartphone</span>
+                    Other UPI / WhatsApp Pay
+                  </a>
+                </div>
+              ) : (
+                <>
+                  <a
+                    href={upiIntentLink}
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-extrabold rounded-xl text-lg shadow-[0_4px_20px_rgba(16,185,129,0.3)] transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_4px_25px_rgba(16,185,129,0.4)] text-center animate-pulse"
+                  >
+                    <span className="material-symbols-outlined">smartphone</span>
+                    Pay ₹{finalAmount} via UPI App
+                  </a>
+                  <p className="text-[11px] sm:text-xs text-center text-gray-400">
+                    📱 Recommended for mobile users (Opens GPay, PhonePe, Paytm, BHIM directly).
+                  </p>
+                </>
+              )}
             </div>
 
             {/* QR Payment toggle button */}
