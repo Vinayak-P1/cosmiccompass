@@ -39,9 +39,14 @@ const Navbar = () => {
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         <Link
           to="/"
-          className="flex items-center cursor-pointer no-underline"
+          className="flex items-center gap-3 cursor-pointer no-underline"
         >
-          <img src="/UrbanAstro_logo.png" alt="UrbanAstro Logo" className="h-14 w-auto object-contain" />
+          <div className="flex items-center gap-2.5">
+            <img src="/favicon-96x96.png" alt="UrbanAstro Logo" className="w-9 h-9 object-contain" />
+            <span className="text-white text-xl font-bold tracking-tight animate-fade-in" style={{fontFamily:'Inter,sans-serif'}}>
+              Urban<span className="text-blue-400">Astro</span>
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
@@ -165,8 +170,11 @@ const Navbar = () => {
           >
             <div className="p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
-                <Link to="/" onClick={() => setShowMenu(false)} className="flex items-center cursor-pointer no-underline">
-                  <img src="/UrbanAstro_logo.png" alt="UrbanAstro Logo" className="h-12 w-auto object-contain" />
+                <Link to="/" onClick={() => setShowMenu(false)} className="flex items-center gap-2.5 cursor-pointer no-underline">
+                  <img src="/favicon-96x96.png" alt="UrbanAstro Logo" className="w-8 h-8 object-contain" />
+                  <span className="text-white text-lg font-bold tracking-tight" style={{fontFamily:'Inter,sans-serif'}}>
+                    Urban<span className="text-blue-400">Astro</span>
+                  </span>
                 </Link>
                 <button onClick={() => setShowMenu(false)} className="text-white">Close</button>
               </div>
