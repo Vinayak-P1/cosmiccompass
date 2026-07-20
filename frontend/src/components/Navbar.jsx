@@ -42,7 +42,7 @@ const Navbar = () => {
           className="flex items-center gap-3 cursor-pointer no-underline"
         >
           <div className="flex items-center gap-2.5">
-            <img src="/favicon-96x96.png" alt="UrbanAstro Logo" className="w-10 h-10 object-contain translate-y-[2px]" />
+            <img src="/favicon-96x96.png" alt="UrbanAstro Logo" className="w-9 h-9 object-contain" />
             <span className="text-white text-2xl font-bold tracking-tight animate-fade-in" style={{fontFamily:'Inter,sans-serif'}}>
               Urban<span className="text-blue-400">Astro</span>
             </span>
@@ -171,7 +171,7 @@ const Navbar = () => {
             <div className="p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <Link to="/" onClick={() => setShowMenu(false)} className="flex items-center gap-2.5 cursor-pointer no-underline">
-                  <img src="/favicon-96x96.png" alt="UrbanAstro Logo" className="w-9 h-9 object-contain translate-y-[2px]" />
+                  <img src="/favicon-96x96.png" alt="UrbanAstro Logo" className="w-8 h-8 object-contain" />
                   <span className="text-white text-xl font-bold tracking-tight" style={{fontFamily:'Inter,sans-serif'}}>
                     Urban<span className="text-blue-400">Astro</span>
                   </span>
