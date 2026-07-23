@@ -4,6 +4,15 @@ import { ArrowLeft, Save, Star, TrendingUp, Users, CheckCircle, Sparkles, Refres
 
 const API = import.meta.env.VITE_API_URL || "";
 
+const formatStatPreview = (val) => {
+  const num = Number(val || 0);
+  if (num >= 1000) {
+    const inK = (num / 1000).toFixed(1);
+    return `${inK.endsWith(".0") ? Math.floor(num / 1000) : inK}K+`;
+  }
+  return `${num}+`;
+};
+
 const ManageStats = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -81,7 +90,7 @@ const ManageStats = () => {
 
       const data = await res.json();
       if (res.ok && data.success) {
-        setMessage("Stats settings updated successfully!");
+        setMessage("Stats settings updated successfully! Check Home Page now.");
         fetchStatsSettings();
       } else {
         setError(data.error || "Failed to update stats settings");
@@ -93,6 +102,9 @@ const ManageStats = () => {
       setSaving(false);
     }
   };
+
+  const totalReadingsCalculated = Number(readingsBase || 0) + liveData.completedBookingsCount;
+  const totalExpertsCalculated = Number(verifiedExpertsBase || 0) + liveData.astrologersCount;
 
   return (
     <div className="min-h-screen font-display text-white pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
@@ -147,7 +159,7 @@ const ManageStats = () => {
             <TrendingUp className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <div className="text-xs text-white/40 font-medium">Completed Reports</div>
+            <div className="text-xs text-white/40 font-medium">Completed Reports in DB</div>
             <div className="text-2xl font-bold text-white mt-0.5">
               {liveData.completedBookingsCount}
             </div>
@@ -162,7 +174,7 @@ const ManageStats = () => {
             <Users className="w-6 h-6 text-cyan-400" />
           </div>
           <div>
-            <div className="text-xs text-white/40 font-medium">Verified Astrologers</div>
+            <div className="text-xs text-white/40 font-medium">Astrologers in DB</div>
             <div className="text-2xl font-bold text-white mt-0.5">
               {liveData.astrologersCount}
             </div>
@@ -188,6 +200,32 @@ const ManageStats = () => {
         </div>
       </div>
 
+      {/* Live Homepage Preview Bar */}
+      <div className="ua-card p-5 mb-8 border border-[#7C3AED]/30 bg-[#7C3AED]/5">
+        <div className="text-xs font-bold text-[#22D3EE] uppercase tracking-wider mb-3 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[#7C3AED]" />
+          Live Homepage Display Preview
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div className="bg-[#050816] p-3 rounded-xl border border-white/[0.06]">
+            <div className="text-xl font-bold text-white">{formatStatPreview(totalReadingsCalculated)}</div>
+            <div className="text-[11px] text-white/40">Readings Delivered</div>
+          </div>
+          <div className="bg-[#050816] p-3 rounded-xl border border-white/[0.06]">
+            <div className="text-xl font-bold text-white">{formatStatPreview(totalExpertsCalculated)}</div>
+            <div className="text-[11px] text-white/40">Verified Experts</div>
+          </div>
+          <div className="bg-[#050816] p-3 rounded-xl border border-white/[0.06]">
+            <div className="text-xl font-bold text-white">{userRatingOverride || "4.9"}</div>
+            <div className="text-[11px] text-white/40">User Rating</div>
+          </div>
+          <div className="bg-[#050816] p-3 rounded-xl border border-white/[0.06]">
+            <div className="text-xl font-bold text-white">{satisfactionOverride ? `${satisfactionOverride}%` : "98%"}</div>
+            <div className="text-[11px] text-white/40">Satisfaction</div>
+          </div>
+        </div>
+      </div>
+
       {/* Admin Settings Form */}
       <form onSubmit={handleSave} className="ua-card p-6 mb-10 space-y-6">
         <h3 className="text-lg font-bold text-white flex items-center gap-2 border-b border-white/[0.08] pb-4">
@@ -199,7 +237,7 @@ const ManageStats = () => {
           {/* Readings Base Offset */}
           <div>
             <label className="text-xs font-semibold text-white/70 uppercase tracking-wider block mb-2">
-              Readings Delivered Base Offset
+              Readings Delivered Base Offset (e.g. 10000)
             </label>
             <input
               type="number"
@@ -208,17 +246,15 @@ const ManageStats = () => {
               className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 h-11 text-white text-base focus:border-[#7C3AED]/50 outline-none"
             />
             <p className="text-[11px] text-white/40 mt-1.5">
-              Total shown = Base ({readingsBase}) + Completed Reports ({liveData.completedBookingsCount}) ={" "}
-              <span className="text-purple-400 font-bold">
-                {Number(readingsBase) + liveData.completedBookingsCount}+
-              </span>
+              Will show on Homepage: <span className="text-purple-400 font-bold">{formatStatPreview(totalReadingsCalculated)}</span>
+              <span className="ml-1 text-white/30">({readingsBase || 0} Base + {liveData.completedBookingsCount} DB reports)</span>
             </p>
           </div>
 
           {/* Verified Experts Base Offset */}
           <div>
             <label className="text-xs font-semibold text-white/70 uppercase tracking-wider block mb-2">
-              Verified Experts Base Offset
+              Verified Experts Base Offset (e.g. 50)
             </label>
             <input
               type="number"
@@ -227,10 +263,8 @@ const ManageStats = () => {
               className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 h-11 text-white text-base focus:border-[#7C3AED]/50 outline-none"
             />
             <p className="text-[11px] text-white/40 mt-1.5">
-              Total shown = Base ({verifiedExpertsBase}) + Active Astrologers ({liveData.astrologersCount}) ={" "}
-              <span className="text-cyan-400 font-bold">
-                {Number(verifiedExpertsBase) + liveData.astrologersCount}+
-              </span>
+              Will show on Homepage: <span className="text-cyan-400 font-bold">{formatStatPreview(totalExpertsCalculated)}</span>
+              <span className="ml-1 text-white/30">({verifiedExpertsBase || 0} Base + {liveData.astrologersCount} DB astrologers)</span>
             </p>
           </div>
 
@@ -250,7 +284,7 @@ const ManageStats = () => {
               className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 h-11 text-white text-base focus:border-[#7C3AED]/50 outline-none"
             />
             <p className="text-[11px] text-white/40 mt-1.5">
-              Leave blank to automatically calculate from user 5-star ratings.
+              Leave blank to automatically calculate average from user 5-star ratings.
             </p>
           </div>
 
