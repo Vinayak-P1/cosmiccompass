@@ -54,8 +54,17 @@ const HeroSection = () => {
     <section className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-28 pb-24 overflow-hidden">
       {/* ── Ambient Radial Lighting Auras ───────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-[#7C3AED]/12 blur-[140px]" />
-        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-[#D4AF37]/8 blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full bg-[#7C3AED]/18 blur-[130px]" />
+        <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] rounded-full bg-[#D4AF37]/10 blur-[120px]" />
+      </div>
+
+      {/* ── Rotating Golden Celestial Zodiac Compass Wheel ───────────── */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[55%] w-[500px] sm:w-[620px] md:w-[720px] aspect-square pointer-events-none z-0 opacity-[0.35] select-none">
+        <img
+          src="/zodiac_wheel.png"
+          alt="Zodiac Compass Wheel"
+          className="w-full h-full object-contain animate-spin-slow"
+        />
       </div>
 
       {/* ── Main Hero Content ────────────────────────────────────────── */}
