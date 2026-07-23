@@ -21,6 +21,7 @@ import ManageAstrologers from "./pages/admin/ManageAstrologers";
 import ManageCoupons from "./pages/admin/ManageCoupons";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManagePricing from "./pages/admin/ManagePricing";
+import ManageStats from "./pages/admin/ManageStats";
 
 // ✅ User Protected Route
 const ProtectedRoute = ({ children }) => {
@@ -183,6 +184,14 @@ function App() {
             element={
               <AdminRoute>
                 <ManageBookings />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/stats"
+            element={
+              <AdminRoute>
+                <ManageStats />
               </AdminRoute>
             }
           />

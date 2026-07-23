@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Users, Tag, DollarSign, FileText } from "lucide-react";
+import { Users, Tag, DollarSign, FileText, BarChart3 } from "lucide-react";
 
 const AdminCard = ({ to, title, description, icon: Icon }) => (
   <Link
@@ -48,11 +48,11 @@ const AdminDashboard = () => {
             Admin <span className="text-[#7C3AED]">Dashboard</span>
           </h1>
           <p className="text-white/50 text-base max-w-xl">
-            Manage astrologers, coupons, pricing plans, and user consultation reports.
+            Manage astrologers, coupons, pricing plans, site stats, and user consultation reports.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-up">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-up">
           <AdminCard
             to="/admin/astrologers"
             title="Astrologers"
@@ -76,6 +76,12 @@ const AdminDashboard = () => {
             title="User Reports"
             description="Approve payments & upload PDFs"
             icon={FileText}
+          />
+          <AdminCard
+            to="/admin/stats"
+            title="Stats & Ratings"
+            description="Manage homepage numbers & view user reviews"
+            icon={BarChart3}
           />
         </div>
       </div>

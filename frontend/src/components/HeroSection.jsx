@@ -1,11 +1,39 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Sparkles } from "lucide-react";
 
+const API = import.meta.env.VITE_API_URL || "";
+
 const HeroSection = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [statsData, setStatsData] = useState({
+    readingsDelivered: "10K+",
+    verifiedExperts: "50+",
+    userRating: "4.9",
+    satisfaction: "98%",
+  });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${API}/api/stats/public`);
+        const data = await res.json();
+        if (res.ok && data.success && data.stats) {
+          setStatsData({
+            readingsDelivered: data.stats.readingsDelivered || "10K+",
+            verifiedExperts: data.stats.verifiedExperts || "50+",
+            userRating: data.stats.userRating || "4.9",
+            satisfaction: data.stats.satisfaction || "98%",
+          });
+        }
+      } catch (err) {
+        console.error("Fetch public stats error:", err);
+      }
+    })();
+  }, []);
 
   const handleConsultationClick = () => {
     if (!user) {
@@ -15,11 +43,11 @@ const HeroSection = () => {
     }
   };
 
-  const stats = [
-    { value: "10K+", label: "Readings Delivered" },
-    { value: "50+", label: "Verified Experts" },
-    { value: "4.9", label: "User Rating" },
-    { value: "98%", label: "Satisfaction" },
+  const statsList = [
+    { value: statsData.readingsDelivered, label: "Readings Delivered" },
+    { value: statsData.verifiedExperts, label: "Verified Experts" },
+    { value: statsData.userRating, label: "User Rating" },
+    { value: statsData.satisfaction, label: "Satisfaction" },
   ];
 
   return (
@@ -60,7 +88,7 @@ const HeroSection = () => {
         <div className="flex items-center justify-center">
           <button
             onClick={handleConsultationClick}
-            className="ua-btn-primary text-base px-8 py-4 shadow-lg shadow-[#7C3AED]/25"
+            className="ua-btn-primary text-base px-8 py-4 shadow-lg shadow-[#7C3AED]/25 cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             Reveal Your Celestial Path
@@ -70,7 +98,7 @@ const HeroSection = () => {
 
       {/* ── Stats Row ────────────────────────────────────────────────── */}
       <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-px mt-20 w-full max-w-3xl border border-white/[0.06] rounded-2xl overflow-hidden bg-white/[0.06] animate-fade-up animate-fade-up-d2">
-        {stats.map((s) => (
+        {statsList.map((s) => (
           <div key={s.label} className="bg-[#050816] px-6 py-5 text-center">
             <div
               className="text-2xl font-bold text-white"

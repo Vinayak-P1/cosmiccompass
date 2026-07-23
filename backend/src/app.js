@@ -12,6 +12,7 @@ import reportRoutes from "./routes/report.routes.js";
 import astrologerRoutes from "./routes/astrologer.routes.js";
 import couponRoutes from "./routes/coupon.routes.js";
 import pricingRoutes from "./routes/pricing.routes.js";
+import statsRoutes from "./routes/stats.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import Astrologer from "./models/Astrologer.js";
@@ -127,6 +128,7 @@ app.use("/api/reports", reportRoutes);
 app.use("/api/astrologers", astrologerRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/pricing", pricingRoutes);
+app.use("/api/stats", statsRoutes);
 
 // ✅ Dynamic sitemap.xml endpoint with 10-minute caching
 let cachedSitemap = null;
