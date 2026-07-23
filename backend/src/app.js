@@ -14,6 +14,7 @@ import couponRoutes from "./routes/coupon.routes.js";
 import pricingRoutes from "./routes/pricing.routes.js";
 import statsRoutes from "./routes/stats.routes.js";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import Astrologer from "./models/Astrologer.js";
 
@@ -129,6 +130,19 @@ app.use("/api/astrologers", astrologerRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/stats", statsRoutes);
+
+// ✅ Serve compiled frontend dist if available (for full-stack deployment on Render)
+const frontendDistPath = path.join(__dirname, "../../frontend/dist");
+if (fs.existsSync(frontendDistPath)) {
+  console.log("⚡ Serving frontend build from:", frontendDistPath);
+  app.use(express.static(frontendDistPath));
+  app.get("*", (req, res, next) => {
+    if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/sitemap.xml")) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+}
 
 // ✅ Dynamic sitemap.xml endpoint with 10-minute caching
 let cachedSitemap = null;
