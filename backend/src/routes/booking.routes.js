@@ -9,6 +9,7 @@ import {
   viewReport,
   deleteReport,
   cleanupOldReports,
+  rateBooking,
 } from "../controllers/booking.controller.js";
 import { submitManualPayment, approveBooking, disapproveBooking } from "../controllers/booking.controller.js";
 import { pdfUpload, imageUpload } from "../middleware/upload.js";
@@ -33,6 +34,7 @@ router.post(
   submitManualPayment
 );
 router.get("/me", protect, myBookings);
+router.put("/:id/rate", protect, rateBooking);
 
 // Admin approve/disapprove
 router.put("/:id/approve", protect, adminOnly, approveBooking);

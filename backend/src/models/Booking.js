@@ -44,6 +44,11 @@ const bookingSchema = new mongoose.Schema(
     report: { type: mongoose.Schema.Types.ObjectId, ref: "Report" },
     // Astrologer linkage
     astrologer: { type: mongoose.Schema.Types.ObjectId, ref: "Astrologer" },
+
+    // User Rating & Review
+    rating: { type: Number, min: 1, max: 5, default: null },
+    review: { type: String, default: "" },
+    ratedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

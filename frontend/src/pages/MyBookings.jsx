@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FileText, ExternalLink, Calendar, Plus, Crown, Zap, Clock, ShieldCheck, AlertCircle } from "lucide-react";
+import { FileText, ExternalLink, Calendar, Plus, Crown, Zap, Clock, ShieldCheck, AlertCircle, Star, Sparkles } from "lucide-react";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -23,25 +23,168 @@ async function openPdfUrlInNewTab(url, headers = {}) {
   }
 }
 
+const RatingSection = ({ booking, onRatingSubmitted }) => {
+  const [selectedStars, setSelectedStars] = useState(booking.rating || 0);
+  const [hoverStars, setHoverStars] = useState(0);
+  const [reviewText, setReviewText] = useState(booking.review || "");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(!!booking.rating);
+  const [error, setError] = useState("");
+
+  const handleSubmitRating = async () => {
+    if (selectedStars === 0) {
+      setError("Please select at least 1 star rating.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      setSubmitting(true);
+      setError("");
+      const res = await fetch(`${API}/api/bookings/${booking._id}/rate`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          rating: selectedStars,
+          review: reviewText,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubmitted(true);
+        if (onRatingSubmitted) onRatingSubmitted(booking._id, selectedStars, reviewText);
+      } else {
+        setError(data.error || "Failed to submit rating");
+      }
+    } catch (e) {
+      console.error("Submit rating error:", e);
+      setError("Network error. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (submitted || booking.rating) {
+    return (
+      <div className="mt-3 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs">
+        <div className="flex items-center gap-1.5 text-amber-300 font-bold mb-1">
+          <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star
+                key={s}
+                className={`w-4 h-4 ${
+                  s <= (booking.rating || selectedStars)
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-white/20"
+                }`}
+              />
+            ))}
+          </div>
+          <span className="ml-1 text-sm font-extrabold text-white">
+            {booking.rating || selectedStars}/5
+          </span>
+          <span className="text-emerald-400 text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded-full ml-auto">
+            Rating Submitted
+          </span>
+        </div>
+        {(booking.review || reviewText) && (
+          <p className="text-white/70 italic mt-1 font-normal">
+            "{booking.review || reviewText}"
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-4 pt-3 border-t border-white/[0.06] space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-white/70 flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          Rate Your Consultation:
+        </span>
+        <div className="flex items-center gap-1">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onMouseEnter={() => setHoverStars(s)}
+              onMouseLeave={() => setHoverStars(0)}
+              onClick={() => setSelectedStars(s)}
+              className="p-1 transition-transform hover:scale-125 focus:outline-none cursor-pointer"
+            >
+              <Star
+                className={`w-5 h-5 transition-colors ${
+                  s <= (hoverStars || selectedStars)
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-white/20 hover:text-amber-400/50"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {selectedStars > 0 && (
+        <div className="space-y-2 animate-fade-up">
+          <input
+            type="text"
+            placeholder="Write a quick review / feedback (optional)..."
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white placeholder-white/25 focus:border-[#7C3AED]/50 outline-none"
+          />
+          {error && <p className="text-[11px] text-red-400">{error}</p>}
+          <button
+            onClick={handleSubmitRating}
+            disabled={submitting}
+            className="ua-btn-primary text-xs py-2 px-4 w-full justify-center shadow-md shadow-[#7C3AED]/20"
+          >
+            {submitting ? "Submitting..." : "Submit Review"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchMyBookings = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
       return;
     }
-    (async () => {
+    try {
       const res = await fetch(`${API}/api/bookings/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (res.ok) setBookings(data.items || []);
       else alert(data.error || "Failed to fetch bookings");
-    })();
+    } catch (e) {
+      console.error("Fetch bookings error:", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyBookings();
   }, []);
+
+  const handleRatingSubmitted = (bookingId, rating, review) => {
+    setBookings((prev) =>
+      prev.map((b) => (b._id === bookingId ? { ...b, rating, review } : b))
+    );
+  };
 
   const badge = (s) => {
     if (s === "completed")
@@ -53,7 +196,18 @@ const MyBookings = () => {
     if (s === "pending")
       return <span className="ua-badge ua-badge-warning">Pending</span>;
     if (s === "disapproved")
-      return <span className="ua-badge" style={{ background: "rgba(239,68,68,0.1)", color: "#ef4444", borderColor: "rgba(239,68,68,0.2)" }}>Disapproved</span>;
+      return (
+        <span
+          className="ua-badge"
+          style={{
+            background: "rgba(239,68,68,0.1)",
+            color: "#ef4444",
+            borderColor: "rgba(239,68,68,0.2)",
+          }}
+        >
+          Disapproved
+        </span>
+      );
     return <span className="ua-badge ua-badge-default">{s}</span>;
   };
 
@@ -139,6 +293,7 @@ const MyBookings = () => {
                   </span>
                 </div>
 
+                {/* Report PDF View */}
                 {b.report && (
                   <div className="mt-4 pt-3 border-t border-white/[0.06]">
                     <button
@@ -174,6 +329,14 @@ const MyBookings = () => {
                       <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   </div>
+                )}
+
+                {/* Rating Section — for Completed Consultations */}
+                {b.status === "completed" && (
+                  <RatingSection
+                    booking={b}
+                    onRatingSubmitted={handleRatingSubmitted}
+                  />
                 )}
               </div>
             ))}

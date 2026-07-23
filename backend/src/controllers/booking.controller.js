@@ -417,3 +417,41 @@ export const cleanupOldReports = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
+// ---------------- Rate Completed Booking (USER) ----------------
+export const rateBooking = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating, review = "" } = req.body;
+
+    const numRating = Number(rating);
+    if (!numRating || numRating < 1 || numRating > 5) {
+      return res.status(400).json({ error: "Rating must be a number between 1 and 5." });
+    }
+
+    const booking = await Booking.findById(id);
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found." });
+    }
+
+    // Verify ownership
+    if (booking.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ error: "Unauthorized. You do not own this booking." });
+    }
+
+    // Verify status is completed
+    if (booking.status !== "completed") {
+      return res.status(400).json({ error: "You can only rate completed consultations." });
+    }
+
+    booking.rating = numRating;
+    booking.review = String(review).trim();
+    booking.ratedAt = new Date();
+    await booking.save();
+
+    res.json({ success: true, booking });
+  } catch (err) {
+    console.error("RATE BOOKING ERROR =>", err);
+    res.status(500).json({ error: err.message });
+  }
+};
