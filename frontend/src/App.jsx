@@ -77,10 +77,11 @@ function App() {
   }, [location]);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-[#050816]">
       <CosmicBackground />
-      <Navbar />
-      <main id="main-content" className="pt-16">
+      <div className="relative z-10">
+        <Navbar />
+        <main id="main-content" className="pt-16">
         <Routes>
           {/* 🌐 Public Routes */}
           <Route path="/" element={<Home />} />
@@ -202,6 +203,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
+      </div>
     </div>
   );
 }

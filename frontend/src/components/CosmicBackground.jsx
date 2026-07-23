@@ -1,53 +1,47 @@
 import React, { useMemo } from "react";
 
-/**
- * Helper to generate deterministic pseudo-random star coordinates (0vw to 100vw, 0vh to 100vh)
- * Creates a CSS box-shadow string for N stars without any DOM clutter or images.
- */
 function generateStarsShadow(count, seedOffset, colors) {
   const shadows = [];
   for (let i = 0; i < count; i++) {
     const seed = i + seedOffset;
-    // Deterministic random formulas
     const x = (((seed * 9301 + 49297) % 233280) / 233280 * 100).toFixed(2);
     const y = (((seed * 49297 + 9301) % 233280) / 233280 * 100).toFixed(2);
     const color = colors[i % colors.length];
-    const blur = i % 3 === 0 ? "1px" : "0px";
-    shadows.push(`${x}vw ${y}vh ${blur} ${color}`);
+    shadows.push(`${x}vw ${y}vh 0px 0.8px ${color}`);
   }
   return shadows.join(", ");
 }
 
 const CosmicBackground = () => {
-  // Layer 1: 50 Crisp White Stars (Twinkle 4s)
+  // Layer 1: 50 Crisp White Stars
   const starsLayer1 = useMemo(
     () =>
       generateStarsShadow(50, 100, [
-        "rgba(255, 255, 255, 0.9)",
+        "#FFFFFF",
+        "rgba(255, 255, 255, 0.85)",
         "rgba(255, 255, 255, 0.6)",
-        "rgba(255, 255, 255, 0.4)",
       ]),
     []
   );
 
-  // Layer 2: 50 Golden Celestial Stars — Astrotalk Vibe (Twinkle 6s, 1.5s delay)
+  // Layer 2: 50 Golden Celestial Stars (Astrotalk Gold Vibe)
   const starsLayer2 = useMemo(
     () =>
       generateStarsShadow(50, 500, [
-        "rgba(245, 158, 11, 0.85)",
-        "rgba(251, 191, 36, 0.65)",
-        "rgba(254, 240, 138, 0.5)",
+        "#F59E0B",
+        "#FBBF24",
+        "rgba(245, 158, 11, 0.8)",
       ]),
     []
   );
 
-  // Layer 3: 50 Deep Purple & Cyan Cosmic Stars (Twinkle 8s, 3s delay)
+  // Layer 3: 50 Purple & Cyan Cosmic Stars
   const starsLayer3 = useMemo(
     () =>
       generateStarsShadow(50, 900, [
-        "rgba(124, 58, 237, 0.75)",
-        "rgba(167, 139, 250, 0.6)",
-        "rgba(34, 211, 238, 0.7)",
+        "#7C3AED",
+        "#A78BFA",
+        "#22D3EE",
       ]),
     []
   );
@@ -55,93 +49,74 @@ const CosmicBackground = () => {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none overflow-hidden bg-[#050816] -z-50"
-      style={{ isolation: "isolate" }}
+      className="fixed inset-0 pointer-events-none overflow-hidden bg-[#050816] z-0"
     >
-      {/* ── Layer 2: Large Radial Golden Glow ────────────────────────────────── */}
+      {/* Large Radial Golden Glow (Astrotalk Aura) */}
       <div
-        className="absolute top-[-10%] right-[-10%] w-[70vw] h-[70vw] max-w-[900px] max-h-[900px] rounded-full pointer-events-none transition-opacity duration-1000"
+        className="absolute top-[-5%] right-[-5%] w-[65vw] h-[65vw] max-w-[800px] max-h-[800px] rounded-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.03) 45%, transparent 70%)",
+            "radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(245, 158, 11, 0.04) 45%, transparent 70%)",
+          filter: "blur(50px)",
+        }}
+      />
+
+      {/* Large Radial Purple Glow */}
+      <div
+        className="absolute bottom-[-10%] left-[-5%] w-[75vw] h-[75vw] max-w-[900px] max-h-[900px] rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, rgba(109, 40, 217, 0.05) 50%, transparent 75%)",
           filter: "blur(60px)",
-          transform: "translate3d(0,0,0)",
         }}
       />
 
-      {/* ── Layer 3: Large Radial Purple Glow ────────────────────────────────── */}
+      {/* Small Cyan Glow Accent */}
       <div
-        className="absolute bottom-[-15%] left-[-10%] w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] rounded-full pointer-events-none transition-opacity duration-1000"
+        className="absolute top-[50%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(109, 40, 217, 0.04) 50%, transparent 75%)",
-          filter: "blur(80px)",
-          transform: "translate3d(0,0,0)",
+            "radial-gradient(circle, rgba(34, 211, 238, 0.1) 0%, rgba(34, 211, 238, 0.02) 50%, transparent 70%)",
+          filter: "blur(50px)",
         }}
       />
 
-      {/* ── Layer 4: Small Cyan Glow Accent ─────────────────────────────────── */}
+      {/* 150 Twinkling Stars (Pure CSS) */}
       <div
-        className="absolute top-[45%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(34, 211, 238, 0.07) 0%, rgba(34, 211, 238, 0.01) 50%, transparent 70%)",
-          filter: "blur(70px)",
-          transform: "translate3d(0,0,0)",
-        }}
+        className="absolute top-0 left-0 w-[2px] h-[2px] rounded-full animate-cosmic-twinkle-a"
+        style={{ boxShadow: starsLayer1 }}
       />
-
-      {/* ── Layer 5 & 6: 150 Randomly Distributed Twinkling Stars (Pure CSS) ── */}
-      {/* Star Sub-Layer A (50 White Stars) */}
       <div
-        className="absolute top-0 left-0 w-[1px] h-[1px] rounded-full animate-cosmic-twinkle-a"
-        style={{
-          boxShadow: starsLayer1,
-          willChange: "opacity, transform",
-        }}
+        className="absolute top-0 left-0 w-[2px] h-[2px] rounded-full animate-cosmic-twinkle-b"
+        style={{ boxShadow: starsLayer2 }}
       />
-
-      {/* Star Sub-Layer B (50 Golden Stars) */}
       <div
-        className="absolute top-0 left-0 w-[1.5px] h-[1.5px] rounded-full animate-cosmic-twinkle-b"
-        style={{
-          boxShadow: starsLayer2,
-          willChange: "opacity, transform",
-        }}
+        className="absolute top-0 left-0 w-[2.5px] h-[2.5px] rounded-full animate-cosmic-twinkle-c"
+        style={{ boxShadow: starsLayer3 }}
       />
 
-      {/* Star Sub-Layer C (50 Cosmic Purple/Cyan Stars) */}
-      <div
-        className="absolute top-0 left-0 w-[2px] h-[2px] rounded-full animate-cosmic-twinkle-c"
-        style={{
-          boxShadow: starsLayer3,
-          willChange: "opacity, transform",
-        }}
-      />
-
-      {/* Custom Twinkle Animations CSS */}
       <style>{`
         @keyframes cosmicTwinkleA {
-          0%, 100% { opacity: 0.35; transform: scale(0.85); }
-          50%      { opacity: 1;    transform: scale(1.15); }
+          0%, 100% { opacity: 0.3; transform: scale(0.8); }
+          50%      { opacity: 1;   transform: scale(1.3); }
         }
         @keyframes cosmicTwinkleB {
-          0%, 100% { opacity: 0.9;  transform: scale(1.1);  }
-          50%      { opacity: 0.25; transform: scale(0.8);  }
+          0%, 100% { opacity: 0.95; transform: scale(1.2); }
+          50%      { opacity: 0.2;  transform: scale(0.7); }
         }
         @keyframes cosmicTwinkleC {
-          0%, 100% { opacity: 0.2;  transform: scale(0.8);  }
-          50%      { opacity: 0.85; transform: scale(1.2);  }
+          0%, 100% { opacity: 0.25; transform: scale(0.7); }
+          50%      { opacity: 0.9;  transform: scale(1.25); }
         }
 
         .animate-cosmic-twinkle-a {
-          animation: cosmicTwinkleA 4s ease-in-out infinite;
+          animation: cosmicTwinkleA 3.5s ease-in-out infinite;
         }
         .animate-cosmic-twinkle-b {
-          animation: cosmicTwinkleB 6.5s ease-in-out infinite 1.5s;
+          animation: cosmicTwinkleB 5.5s ease-in-out infinite 1.2s;
         }
         .animate-cosmic-twinkle-c {
-          animation: cosmicTwinkleC 8s ease-in-out infinite 3.5s;
+          animation: cosmicTwinkleC 7s ease-in-out infinite 2.8s;
         }
       `}</style>
     </div>
