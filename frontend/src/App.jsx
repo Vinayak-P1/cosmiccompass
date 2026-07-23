@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import CosmicBackground from "./components/CosmicBackground";
 import Home from "./pages/Home";
 import Astrologers from "./pages/Astrologers";
 import Blogs from "./pages/Blogs";
@@ -76,7 +77,8 @@ function App() {
   }, [location]);
 
   return (
-    <div>
+    <div className="relative min-h-screen">
+      <CosmicBackground />
       <Navbar />
       <main id="main-content" className="pt-16">
         <Routes>
