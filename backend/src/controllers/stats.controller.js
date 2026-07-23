@@ -21,16 +21,21 @@ export const getPublicStats = async (req, res) => {
     const completedBookingsCount = await Booking.countDocuments({ status: "completed" });
     const totalReadings = (settings.readingsBase || 0) + completedBookingsCount;
 
-    // Format readings: if >= 10000, use formatted number with comma (e.g. 10,005+) or K+ format
-    let readingsFormatted = `${totalReadings.toLocaleString()}+`;
-    if (totalReadings >= 10000 && totalReadings % 1000 === 0) {
-      readingsFormatted = `${totalReadings / 1000}K+`;
+    // Clean K+ formatting (e.g. 10K+, 10.4K+, 500+)
+    let readingsFormatted = `${totalReadings}+`;
+    if (totalReadings >= 1000) {
+      const inK = (totalReadings / 1000).toFixed(1);
+      readingsFormatted = `${inK.endsWith(".0") ? Math.floor(totalReadings / 1000) : inK}K+`;
     }
 
     // 2. Verified Experts = Base + Actual Astrologers count
     const astrologersCount = await Astrologer.countDocuments({ isActive: { $ne: false } });
     const totalExperts = (settings.verifiedExpertsBase || 0) + astrologersCount;
-    const expertsFormatted = `${totalExperts.toLocaleString()}+`;
+    let expertsFormatted = `${totalExperts}+`;
+    if (totalExperts >= 1000) {
+      const inK = (totalExperts / 1000).toFixed(1);
+      expertsFormatted = `${inK.endsWith(".0") ? Math.floor(totalExperts / 1000) : inK}K+`;
+    }
 
     // 3. User Rating (calculated automatically or manual override)
     let userRatingFormatted = "4.9";
