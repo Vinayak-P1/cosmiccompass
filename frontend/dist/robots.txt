@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallowed paths
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api
+Disallow: /private
+Disallow: /auth
+
+# Sitemap reference
+Sitemap: https://urbanastro.space/sitemap.xml
