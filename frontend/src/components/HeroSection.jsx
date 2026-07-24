@@ -51,27 +51,15 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-[78vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-24 pb-16 overflow-hidden">
-      {/* ── Ambient Radial Lighting Auras (Seamless Non-Clipping) ───────────────── */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-        }}
-      >
-        <div className="absolute top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] sm:w-[560px] aspect-square rounded-full bg-[#7C3AED]/14 blur-[100px]" />
-        <div className="absolute top-1/4 right-1/4 w-[350px] aspect-square rounded-full bg-[#D4AF37]/08 blur-[90px]" />
+    <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-28 pb-24 overflow-hidden">
+      {/* ── Ambient Radial Lighting Auras ────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[650px] aspect-square rounded-full bg-[#7C3AED]/16 blur-[120px]" />
+        <div className="absolute top-1/3 right-1/4 w-[380px] aspect-square rounded-full bg-[#D4AF37]/08 blur-[100px]" />
       </div>
 
-      {/* ── Rotating Golden Celestial Zodiac Compass Wheel (100% Full Wheel Visibility) ── */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[480px] sm:w-[580px] md:w-[680px] aspect-square pointer-events-none z-0 opacity-[0.24] select-none rounded-full overflow-hidden"
-        style={{
-          maskImage: "radial-gradient(circle at center, black 84%, transparent 98%)",
-          WebkitMaskImage: "radial-gradient(circle at center, black 84%, transparent 98%)",
-        }}
-      >
+      {/* ── Rotating Golden Celestial Zodiac Compass Wheel ────────────────────── */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] w-[420px] sm:w-[520px] md:w-[600px] aspect-square pointer-events-none z-0 opacity-[0.25] select-none">
         <img
           src="/zodiac_wheel.png"
           alt="Zodiac Compass Wheel"
