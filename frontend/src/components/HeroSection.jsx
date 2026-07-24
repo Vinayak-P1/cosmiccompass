@@ -68,8 +68,8 @@ const HeroSection = () => {
 
       {/* ── Cohesive Hero Content Block ──────────────────────────────────────── */}
       <div className="relative z-10 max-w-5xl mx-auto animate-fade-up flex flex-col items-center justify-center">
-        {/* Divine Celestial Pill Badge (Just above Zodiac wheel top rim) */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-[#D4AF37]/35 backdrop-blur-md -mt-4 sm:mt-0 mb-6 sm:mb-8 shadow-lg shadow-[#D4AF37]/5">
+        {/* Divine Celestial Pill Badge (Visible shift right above Zodiac wheel top rim on mobile) */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-[#D4AF37]/35 backdrop-blur-md -mt-10 sm:mt-0 mb-4 sm:mb-8 shadow-lg shadow-[#D4AF37]/5 -translate-y-3 sm:translate-y-0">
           <Sparkles className="w-4 h-4 text-[#D4AF37] animate-pulse" />
           <span className="text-xs font-semibold tracking-wider text-[#E8C470] uppercase">
             Backed by Ancient Vedic Science • Built for 2026
@@ -78,7 +78,7 @@ const HeroSection = () => {
 
         {/* Hero Headline (Big, Bold & Regal) */}
         <h1
-          className="text-5xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-bold text-white leading-[1.08] tracking-tight mb-5 sm:mb-6 font-hero-serif"
+          className="text-4xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-bold text-white leading-[1.08] tracking-tight mb-4 sm:mb-6 font-hero-serif"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
           Unlock Your{" "}
@@ -88,12 +88,12 @@ const HeroSection = () => {
         </h1>
 
         {/* Subheadline */}
-        <p className="text-base sm:text-lg md:text-xl text-purple-200/70 max-w-2xl mx-auto leading-relaxed font-light tracking-wide mb-14 sm:mb-10">
+        <p className="text-sm sm:text-lg md:text-xl text-purple-200/70 max-w-2xl mx-auto leading-relaxed font-light tracking-wide mb-8 sm:mb-10">
           Direct 1-on-1 guidance on career, love, health, wealth & marriage from verified veteran astrologers.
         </p>
 
-        {/* Primary CTA Button (Placed just below the Zodiac Wheel bottom rim) */}
-        <div className="flex items-center justify-center pt-4 sm:pt-0">
+        {/* Primary CTA Button (Placed visibly right below the Zodiac Wheel bottom rim) */}
+        <div className="flex items-center justify-center pt-6 sm:pt-0">
           <button
             onClick={handleConsultationClick}
             className="group relative inline-flex items-center gap-3 px-8 sm:px-9 py-4 sm:py-4.5 rounded-2xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-base transition-all duration-300 shadow-xl shadow-[#7C3AED]/35 hover:shadow-[#D4AF37]/25 hover:scale-[1.02] cursor-pointer border border-[#D4AF37]/30"
