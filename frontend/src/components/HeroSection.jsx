@@ -51,7 +51,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-28 pb-24 overflow-hidden">
+    <section className="relative min-h-[78vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-24 pb-16 overflow-hidden">
       {/* ── Ambient Radial Lighting Auras ───────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full bg-[#7C3AED]/18 blur-[130px]" />
