@@ -110,32 +110,6 @@ const HeroSection = () => {
           </button>
         </div>
       </div>
-
-      {/* ── Luxury Glass Stats Cards Grid ────────────────────────────── */}
-      <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-4 mt-20 w-full max-w-4xl animate-fade-up animate-fade-up-d2">
-        {statsList.map((s) => {
-          const Icon = s.icon;
-          return (
-            <div
-              key={s.label}
-              className="group relative p-6 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-[#D4AF37]/40 transition-all duration-300 text-center shadow-lg shadow-black/40 hover:-translate-y-1"
-            >
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#7C3AED]/15 border border-[#7C3AED]/30 mb-3 text-[#E8C470] group-hover:scale-110 transition-transform">
-                <Icon className="w-5 h-5" />
-              </div>
-              <div
-                className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                {s.value}
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-white/60 mt-1">
-                {s.label}
-              </div>
-            </div>
-          );
-        })}
-      </div>
     </section>
   );
 };
