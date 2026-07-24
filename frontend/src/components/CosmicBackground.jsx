@@ -39,9 +39,21 @@ const CosmicBackground = () => {
 
   return (
     <div aria-hidden="true" className="stars-container">
-      {stars.map((star) => (
-        <span key={star.id} className={star.className} style={star.style} />
-      ))}
+      {/* ── Background Star Overlay (Calibrated 35% Density Opacity) ── */}
+      <div className="absolute inset-0 opacity-35 pointer-events-none">
+        {stars.map((star) => (
+          <span key={star.id} className={star.className} style={star.style} />
+        ))}
+      </div>
+
+      {/* ── Radial Vignette Overlay (Darkens edges to lock focus on center hero) ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(5, 5, 10, 0) 30%, rgba(5, 5, 10, 0.65) 85%, rgba(5, 5, 10, 0.95) 100%)",
+        }}
+      />
 
       <style>{`
         /* Deep Obsidian background with 2 large cinematic ambient light sources */
