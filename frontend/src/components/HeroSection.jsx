@@ -89,7 +89,7 @@ const HeroSection = () => {
         </h1>
 
         {/* Subheadline */}
-        <p className="mt-6 text-base sm:text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed mb-12 font-light tracking-wide">
+        <p className="mt-6 text-base sm:text-lg md:text-xl text-purple-200/70 max-w-2xl mx-auto leading-relaxed mb-10 font-light tracking-wide">
           Direct 1-on-1 guidance on career, love, health, wealth & marriage from verified veteran astrologers.
         </p>
 
