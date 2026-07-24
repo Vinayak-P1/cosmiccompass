@@ -64,12 +64,12 @@ const HeroSection = () => {
         <div className="absolute top-1/4 right-1/4 w-[350px] aspect-square rounded-full bg-[#D4AF37]/08 blur-[90px]" />
       </div>
 
-      {/* ── Rotating Golden Celestial Zodiac Compass Wheel (Seamless Circular Radial Mask) ── */}
+      {/* ── Rotating Golden Celestial Zodiac Compass Wheel (100% Full Wheel Visibility) ── */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[42%] w-[420px] sm:w-[520px] md:w-[600px] aspect-square pointer-events-none z-0 opacity-[0.22] select-none rounded-full overflow-hidden"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[46%] w-[480px] sm:w-[580px] md:w-[680px] aspect-square pointer-events-none z-0 opacity-[0.24] select-none rounded-full overflow-hidden"
         style={{
-          maskImage: "radial-gradient(circle at center, black 58%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(circle at center, black 58%, transparent 70%)",
+          maskImage: "radial-gradient(circle at center, black 84%, transparent 98%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 84%, transparent 98%)",
         }}
       >
         <img
