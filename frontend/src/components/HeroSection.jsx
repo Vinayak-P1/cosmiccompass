@@ -69,7 +69,7 @@ const HeroSection = () => {
       {/* ── Cohesive Hero Content Block ──────────────────────────────────────── */}
       <div className="relative z-10 max-w-5xl mx-auto animate-fade-up flex flex-col items-center justify-center">
         {/* Divine Celestial Pill Badge (Visible shift right above Zodiac wheel top rim on mobile) */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-[#D4AF37]/35 backdrop-blur-md -mt-10 sm:mt-0 mb-4 sm:mb-8 shadow-lg shadow-[#D4AF37]/5 -translate-y-3 sm:translate-y-0">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-[#D4AF37]/35 backdrop-blur-md -mt-16 sm:mt-0 mb-4 sm:mb-8 shadow-lg shadow-[#D4AF37]/5 -translate-y-5 sm:translate-y-0">
           <Sparkles className="w-4 h-4 text-[#D4AF37] animate-pulse" />
           <span className="text-xs font-semibold tracking-wider text-[#E8C470] uppercase">
             Backed by Ancient Vedic Science • Built for 2026
@@ -93,7 +93,7 @@ const HeroSection = () => {
         </p>
 
         {/* Primary CTA Button (Placed visibly right below the Zodiac Wheel bottom rim) */}
-        <div className="flex items-center justify-center pt-6 sm:pt-0">
+        <div className="flex items-center justify-center pt-12 sm:pt-0">
           <button
             onClick={handleConsultationClick}
             className="group relative inline-flex items-center gap-3 px-8 sm:px-9 py-4 sm:py-4.5 rounded-2xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-base transition-all duration-300 shadow-xl shadow-[#7C3AED]/35 hover:shadow-[#D4AF37]/25 hover:scale-[1.02] cursor-pointer border border-[#D4AF37]/30"
