@@ -52,10 +52,16 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-[78vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-24 pb-16 overflow-hidden">
-      {/* ── Ambient Radial Lighting Auras ───────────────────────────── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full bg-[#7C3AED]/18 blur-[130px]" />
-        <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] rounded-full bg-[#D4AF37]/10 blur-[120px]" />
+      {/* ── Ambient Radial Lighting Auras (Seamless Non-Clipping) ───────────────── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+        }}
+      >
+        <div className="absolute top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] sm:w-[560px] aspect-square rounded-full bg-[#7C3AED]/14 blur-[100px]" />
+        <div className="absolute top-1/4 right-1/4 w-[350px] aspect-square rounded-full bg-[#D4AF37]/08 blur-[90px]" />
       </div>
 
       {/* ── Rotating Golden Celestial Zodiac Compass Wheel (Seamless Circular Radial Mask) ── */}
