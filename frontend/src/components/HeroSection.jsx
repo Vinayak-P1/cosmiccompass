@@ -51,10 +51,10 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-28 pb-24">
+    <section className="relative min-h-screen flex flex-col items-center justify-between text-center px-4 sm:px-6 pt-24 sm:pt-28 pb-12 sm:pb-20">
 
       {/* ── Rotating Golden Celestial Zodiac Compass Wheel ────────────────────── */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] w-[420px] sm:w-[520px] md:w-[600px] aspect-square pointer-events-none z-0 opacity-[0.20] select-none">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50%] w-[320px] sm:w-[480px] md:w-[560px] aspect-square pointer-events-none z-0 opacity-[0.20] select-none">
         <img
           src="/zodiac_wheel.png"
           alt="Zodiac Compass Wheel"
@@ -66,19 +66,20 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* ── Main Hero Content ────────────────────────────────────────── */}
-      <div className="relative z-10 max-w-5xl mx-auto animate-fade-up">
-        {/* Divine Celestial Pill Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-[#D4AF37]/35 backdrop-blur-md mb-10 shadow-lg shadow-[#D4AF37]/5">
+      {/* ── TOP: Divine Celestial Pill Badge ──────────────────────────────────── */}
+      <div className="relative z-10 animate-fade-up">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-[#D4AF37]/35 backdrop-blur-md shadow-lg shadow-[#D4AF37]/5">
           <Sparkles className="w-4 h-4 text-[#D4AF37] animate-pulse" />
           <span className="text-xs font-semibold tracking-wider text-[#E8C470] uppercase">
             Backed by Ancient Vedic Science • Built for 2026
           </span>
         </div>
+      </div>
 
-        {/* Hero Headline */}
+      {/* ── CENTER: Heading + Subtitle (overlaid on Zodiac Wheel) ─────────── */}
+      <div className="relative z-10 max-w-5xl mx-auto animate-fade-up flex-1 flex flex-col items-center justify-center">
         <h1
-          className="text-5xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-bold text-white leading-[1.10] tracking-tight mb-8 font-hero-serif"
+          className="text-4xl sm:text-7xl md:text-8xl lg:text-[5.5rem] font-bold text-white leading-[1.10] tracking-tight mb-4 sm:mb-6"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
           Unlock Your{" "}
@@ -87,21 +88,20 @@ const HeroSection = () => {
           </span>
         </h1>
 
-        {/* Subheadline */}
-        <p className="mt-6 text-base sm:text-lg md:text-xl text-purple-200/70 max-w-2xl mx-auto leading-relaxed mb-10 font-light tracking-wide">
+        <p className="text-sm sm:text-lg md:text-xl text-purple-200/70 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
           Direct 1-on-1 guidance on career, love, health, wealth & marriage from verified veteran astrologers.
         </p>
+      </div>
 
-        {/* Primary CTA Button */}
-        <div className="flex items-center justify-center">
-          <button
-            onClick={handleConsultationClick}
-            className="group relative inline-flex items-center gap-3 px-9 py-4.5 rounded-2xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-base transition-all duration-300 shadow-xl shadow-[#7C3AED]/35 hover:shadow-[#D4AF37]/25 hover:scale-[1.02] cursor-pointer border border-[#D4AF37]/30"
-          >
-            <Sparkles className="w-5 h-5 text-[#E8C470] transition-transform group-hover:rotate-12" />
-            <span>Reveal Your Celestial Path</span>
-          </button>
-        </div>
+      {/* ── BOTTOM: Primary CTA Button (below wheel area) ────────────────────── */}
+      <div className="relative z-10 animate-fade-up">
+        <button
+          onClick={handleConsultationClick}
+          className="group relative inline-flex items-center gap-3 px-9 py-4.5 rounded-2xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-base transition-all duration-300 shadow-xl shadow-[#7C3AED]/35 hover:shadow-[#D4AF37]/25 hover:scale-[1.02] cursor-pointer border border-[#D4AF37]/30"
+        >
+          <Sparkles className="w-5 h-5 text-[#E8C470] transition-transform group-hover:rotate-12" />
+          <span>Reveal Your Celestial Path</span>
+        </button>
       </div>
     </section>
   );
